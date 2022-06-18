@@ -1,0 +1,38 @@
+
+
+Don't forget to put the -
+  resolve:{
+     "check":function(storage,$location){
+       if((storage.getMail() === null || storage.get_B_u() === null || storage.get_U_u() === null) || storage.getAuth() === null ){
+         // $location.path('/signin');
+         storage.exit();
+       }
+     }
+   }
+in the build.js file later on
+
+<div class="card" ng-if="show_loader == undefined && (main_role == 4 || main_role == 6 || main_role == 7)">
+  <div class="card-header bg-danger">
+    <h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+  </div>
+  <div class="card-body bg-danger">
+    <blockquote class="blockquote mb-0">
+      <p class="text-light">You do not have access to this data</p>
+      <footer class="blockquote-footer text-light">Error
+        <cite title="Error">Occured</cite>
+      </footer>
+    </blockquote>
+
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-3 col-6" ng-if="filterShow == false">
+    <button type="button" class="btn btn-primary" ng-click="filterByDate()"><i class="fa fa-filter"></i> Date</button>
+  </div>
+  <div class="col-md-3 col-6 ml-auto text-right">
+    <button type="button" class="btn btn-primary" ng-click="refreshPage()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw align-middle"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+    </button>
+  </div>
+</div>
