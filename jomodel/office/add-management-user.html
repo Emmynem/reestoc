@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item {{navigation.nav_link == current_nav_split ? 'active' : ''}}" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="dashboard">Overview</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role == 1 || main_role == 2 || main_role == 3)">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Search for user in one account</h5>
+								</div>
+								<div class="card-body">
+
+									<div class="row" ng-if="show_add_form == undefined || show_add_form == false">
+                    <div class="col-md-12">
+											<form name="searchOneAccountForm" ng-submit="searchOneAccountForm.$valid && loadDetails(searchEmail)" novalidate>
+												<div class="form-group">
+													<div class="input-group">
+														<input type="text" name="searchEmail" ng-required="true" ng-model="searchEmail" placeholder="Type and go" class="form-control">
+													</div>
+													<span class="text-danger mt-3" ng-if="searchOneAccountForm.searchEmail.$error.required && searchOneAccountForm.$submitted">Required</span>
+												</div>
+											</form>
+                    </div>
+                  </div>
+
+									<div class="mb-2 text-center" ng-show="show_search_loader">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+
+									<div class="row" ng-if="if_emails_exists == false">
+										<div class="col-12">
+											<div class="card">
+												<div class="card-body">
+													<img class="card-img-top" style="min-width: 100%; object-fit: cover; max-height: 360px;" ng-src="{{user_image}}" alt="{{email.fullname}} profile image">
+
+													<div class="media mt-3" >
+
+														<div class="media-body">
+															<small class="float-right text-navy">One Account</small>
+															<strong>{{email.fullname}}</strong> <br>
+															<p class="card-text mt-3">{{email.email}}</p>
+														</div>
+													</div>
+													<button title="Add Management User" ng-click="addManagementUser(email.email)" class="btn btn-outline-primary mt-3"><i class="fas fa-plus"></i> Add Management User</button>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class="row" ng-if="show_add_form">
+										<div class="col-12">
+											<form name="addManagementUserForm" novalidate>
+												<div class="row form-group">
+                          <div class="col-12">
+                            <label for="" class=" form-control-label">Management User Role</label>
+                            <select id="select_role" name="user_role" ng-model="management_user.role" ng-required="true" class="form-control">
+															<optgroup ng-if="main_role == 1" label="0 Level Clearance">
+                                <option value="1">Super Administrator</option>
+                              </optgroup>
+                              <optgroup ng-if="main_role == 1" label="Level 1 Clearance">
+                                <option value="2">Administrator</option>
+                              </optgroup>
+															<optgroup ng-if="main_role == 1 || main_role == 2" label="Level 2 Clearance">
+                                <option value="3">Sub Administrator</option>
+                              </optgroup>
+															<optgroup label="Level 3 Clearance">
+                                <option value="4">User (Level 4, 6, 7, 15 Clearance included)</option>
+                              </optgroup>
+															<optgroup label="Level 4 Clearance">
+                                <option value="5">Brands, Products, Sub Products & Sharing User</option>
+                              </optgroup>
+															<optgroup label="Level 5 Clearance">
+                                <option value="6">Carts, Orders & Shipments User</option>
+                              </optgroup>
+															<optgroup label="Level 6 Clearance">
+                                <option value="7">Offered Services & Categories User</option>
+                              </optgroup>
+															<optgroup label="Level 7 Clearance">
+                                <option value="8">Product Categories, Sub Categories & Mini Categories User</option>
+                              </optgroup>
+															<optgroup label="Level 8 Clearance">
+                                <option value="9">Coupons, Flash Deals & Pop Up Deals User</option>
+                              </optgroup>
+															<optgroup label="Level 9 Clearance">
+                                <option value="10">Reviews, Favorites, Disputes, Search History & View History User</option>
+                              </optgroup>
+															<optgroup label="Level 10 Clearance">
+                                <option value="11">Stores User</option>
+                              </optgroup>
+															<optgroup label="Level 15 Clearance">
+                                <option value="16">Blogger</option>
+                              </optgroup>
+                            </select>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.user_role.$error.required && addManagementUserForm.$submitted">Select Management User Role</span>
+                          </div>
+                        </div>
+                        <div class="row form-group">
+                          <div class="col-lg-6">
+                            <label for="firstname" class=" form-control-label">Firstname</label>
+                            <input type="text" ng-disabled="true" ng-model="management_user.firstname" name="firstname" ng-required="true" ng-minlength = "3" ng-maxlength = "25" class="form-control">
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.firstname.$error.required && addManagementUserForm.$submitted">Enter Firstname</span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.firstname.$error.minlength && addManagementUserForm.$submitted">Add more characters min length is 3</span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.firstname.$error.maxlength && addManagementUserForm.$submitted">Reduce characters max length is 25</span>
+                          </div>
+													<div class="col-lg-6">
+                            <label for="lastname" class=" form-control-label">Lastname</label>
+                            <input type="text" ng-disabled="true" ng-model="management_user.lastname" name="lastname" ng-required="true" ng-minlength = "3" ng-maxlength = "25" class="form-control">
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.lastname.$error.required && addManagementUserForm.$submitted">Enter Lastname</span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.lastname.$error.minlength && addManagementUserForm.$submitted">Add more characters min length is 3</span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.lastname.$error.maxlength && addManagementUserForm.$submitted">Reduce characters max length is 25</span>
+                          </div>
+                        </div>
+												<div class="row form-group">
+                          <div class="col-lg-6">
+                            <label for="email" class=" form-control-label">Email</label>
+                            <input type="email" name="email" ng-disabled="true" ng-model="management_user.email" ng-required="false" ng-minlength = "3" ng-maxlength = "149" ng-pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" placeholder="e.g. example@domain.com" class="form-control">
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.email.$error.required && addManagementUserForm.$submitted">Enter Email</span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.email.$error.pattern && addManagementUserForm.$submitted">Valid Email Addresses Only </span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.email.$error.minlength && addManagementUserForm.$submitted">Add more characters min length is 3</span>
+                            <span class="text-danger mt-3" ng-if="addManagementUserForm.email.$error.maxlength && addManagementUserForm.$submitted">Reduce characters max length is 149</span>
+                          </div>
+													<div class="col-lg-6">
+														<label for="phone" class=" form-control-label">Phone Number</label>
+														<input type="text" ng-disabled="true" ng-model="management_user.phone" name="phone" ng-required="false" ng-pattern="/^(?:\+(?:[0-9]●?){6,14}[0-9])|([0][7-9][0-1][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])$/" class="form-control">
+														<span class="text-danger mt-3" ng-if="addManagementUserForm.phone.$error.required && addManagementUserForm.$submitted">Enter Phone Number</span>
+														<span class="text-danger mt-3" ng-if="addManagementUserForm.phone.$error.pattern && addManagementUserForm.$submitted">Phone Numbers With Country Codes Only</span>
+													</div>
+                        </div>
+												<div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="" class=" form-control-label">Access Control</label>
+                            <select id="select" name="access" ng-model="management_user.access" ng-required="true" class="form-control">
+                              <option value="1">Granted</option>
+                              <option value="2">Suspended</option>
+                              <option value="3">Revoked</option>
+                            </select>
+                            <span class="text-danger" ng-if="addManagementUserForm.access.$error.required && addManagementUserForm.$submitted">Select Access</span>
+                          </div>
+												</div>
+
+												<div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-12">
+                            <button type="sumbit" ng-click="addManagementUserForm.$valid && saveManagementUser()" class="btn btn-success">
+                              Save Management User <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+												<p class="mb-0 text-center mt-3" ng-if="shouldIShow">Are you sure you want to complete this action ?</p>
+												<p class="mb-0 text-center mt-3" ng-if="shouldIShow">
+													<button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success">
+														Yes
+													</button>
+													<button type="button" ng-disabled="clickOnce" ng-click="removeConfirmModal()" class="btn btn-danger close-modal">
+														No
+													</button>
+												</p>
+
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{showStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{showSuccessStatus}}
+													</div>
+												</div>
+                      </form>
+										</div>
+									</div>
+
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="if_emails_exists == true">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{managementUsersModalStatus}}
+										</div>
+									</div>
+
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="show_add_form == false">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{addUserStatus}}
+										</div>
+									</div>
+
+									<div class="alert alert-primary alert-dismissible mt-3" role="alert">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="fas fa-fw fa-info-circle"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Info</strong> If email doesn't exist, sign up for one account <a target="_blank" href="https://www.myaccount.xnyder.com/">here</a>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role != 1 && main_role != 2 && main_role != 3)">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">You do not have access to this data</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

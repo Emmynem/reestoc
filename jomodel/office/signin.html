@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <meta name="description" content="Xnyder Description"> -->
+  	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+  	<!-- <meta name="author" content="Xnyder Author"> -->
+    <title ng-bind="pageTitle"></title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="assets/css/modal.css" rel="stylesheet">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="assets/images/favicon.png" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="row w-100 m-0">
+          <div class="content-wrapper full-page-wrapper d-flex align-items-center auth lock-full-bg">
+            <div class="card col-lg-4 mx-auto">
+              <div class="card-body ">
+                <h3 class="card-title text-left mb-3">Login</h3>
+                <form class="forms-sample" name="loginForm" novalidate>
+                  <!-- <div class="form-group">
+                    <label>Username *</label>
+                    <input type="text" name="username" ng-model="user.username" ng-required="true" class="form-control p_input">
+                    <div class="d-flex flex-row align-items-center" ng-if="loginForm.username.$error.required && loginForm.$submitted"><i class="mdi mdi-information icon-sm text-danger"></i><p class="mb-0 ml-1"> Enter username or email </p></div>
+                  </div>
+                  <div class="form-group">
+                    <label>Password *</label>
+                    <div class="input-group">
+                      <input type="password" name="password" id="password" ng-model="password" ng-required="true" class="form-control">
+                      <div class="input-group-append">
+                        <button class="btn btn-sm btn-facebook" type="button">
+                          <i class="mdi mdi-eye" id="togglePassword"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center" ng-if="loginForm.password.$error.required && loginForm.$submitted"><i class="mdi mdi-information icon-sm text-danger"></i><p class="mb-0 ml-1"> Enter Password </p></div>
+                  </div> -->
+                  <!-- <div class="form-group d-flex align-items-center justify-content-between">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input"> Remember me </label>
+                    </div>
+                    <a ng-href="reset" class="forgot-pass">Forgot password</a>
+                  </div> -->
+
+                  <div class="mb-2 text-center" ng-if="loadingStatus">
+                    <div class="spinner-grow spinner-grow-lg text-primary mr-2 "style="width:6rem;height:6rem" role="status">
+                      <span class="sr-only">Loading blue...</span>
+                    </div>
+                  </div>
+
+                  <div class="text-center">
+                    <p class="text-success" ng-if="showSuccessStatus">{{loginStatus}}</p>
+                    <p class="text-primary" ng-if="loadingStatus">{{loadingStatus}}</p>
+                    <p class="text-danger" ng-if="things">{{passwordStatus}}</p>
+                    <p class="text-danger" ng-if="showStatus">{{loginStatus}}</p>
+                  </div>
+
+                  <!-- <div class="text-center">
+                    <button type="submit" ng-click="loginForm.$valid && signIn()" class="btn btn-primary btn-block enter-btn">Login</button>
+                  </div> -->
+
+                  <div class="d-flex" ng-if="loadingStatus == undefined">
+                    <button class="btn btn-facebook col" ng-if="welcome_name == 'One account'" ng-click="signInAlt()">
+                      <i class="mdi mdi-login"></i> {{welcome_name}}</button>
+
+                    <button class="btn btn-facebook col" ng-if="welcome_name != 'One account'" ng-click="signInNow()">
+                      <img ng-if="user_details.profileImageWebp != null" ng-src="{{user_details.profileImageWebp}}" class="avatar img-fluid rounded-circle mr-1 mt-1 mb-1" style="width:50px;height:50px;object-fit:cover" alt="{{welcome_name}}" />
+                      <i class="mdi mdi-login" ng-if="user_details.profileImageWebp == null"></i> {{welcome_name}}</button>
+                  </div>
+
+                  <!-- <p class="sign-up">Don't have an Account?<a ng-href="signup"> Sign Up</a></p> -->
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+        </div>
+        <!-- row ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="js/app-1.js"></script>
+    <!-- End custom js for this page -->
+  </body>
+</html>

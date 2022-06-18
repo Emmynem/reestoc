@@ -1,0 +1,390 @@
+	<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item active">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item active" aria-current="page">Personalization</li>
+									<li class="breadcrumb-item"><a ng-href="profile">{{pageTitle}}</a></li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row" ng-if="show_loader">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row" ng-if="show_loader == undefined">
+						<div class="col-md-4 col-xl-4">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Profile Details</h5>
+								</div>
+								<div class="card-body text-center">
+									<img ng-src="{{loggedInUserImage}}" alt="{{loggedInName}}" class="img-fluid rounded-circle mb-2" style="width:130px;height:130px;object-fit:cover" />
+									<h5 class="card-title mb-0">{{loggedInName}}</h5>
+									<!-- <div class="text-muted mb-2">@{{loggedInUsername}}</div> -->
+
+									<!-- <div>
+										<a class="btn btn-primary btn-sm" ng-if="user.user_unique_id == 'Manual-DEV'" href="">Superintendent</a>
+										<a class="btn btn-primary btn-sm" ng-if="user.user_unique_id != 'Manual-DEV'" href="">#{{user.user_unique_id}}</a>
+									</div> -->
+								</div>
+								<hr class="my-0" />
+								<div class="card-body">
+									<h5 class="h6 card-title">User role</h5>
+									<a href="" ng-if="user.user_role == 1" class="badge badge-success mr-1 my-1">Super Administrator</a>
+									<a href="" ng-if="user.user_role == 2" class="badge badge-primary mr-1 my-1">Administrator</a>
+									<a href="" ng-if="user.user_role == 3" class="badge badge-secondary mr-1 my-1">Sub Administrator</a>
+									<a href="" ng-if="user.user_role == 4" class="badge badge-primary mr-1 my-1">User</a>
+									<a href="" ng-if="user.user_role == 5" class="text-primary mr-1 my-1">Brands, Product & Sub Product User</a>
+									<a href="" ng-if="user.user_role == 6" class="text-primary mr-1 my-1">Carts, Orders & Shipments User</a>
+									<a href="" ng-if="user.user_role == 7" class="text-primary mr-1 my-1">Offered Services & Categories User</a>
+									<a href="" ng-if="user.user_role == 8" class="text-primary mr-1 my-1">Product Categories, Sub Categories & Mini Categories User</a>
+									<a href="" ng-if="user.user_role == 9" class="text-primary mr-1 my-1">Coupons, Flash Deals & Pop Up Deals User</a>
+									<a href="" ng-if="user.user_role == 10" class="text-primary mr-1 my-1">Reviews, Favorites, Disputes, Search History & View History User</a>
+									<a href="" ng-if="user.user_role == 11" class="badge badge-primary mr-1 my-1">Stores User</a>
+									<a href="" ng-if="user.user_role == 12" class="badge badge-primary mr-1 my-1">Main Rider</a>
+									<a href="" ng-if="user.user_role == 13" class="badge badge-primary mr-1 my-1">Sub Rider</a>
+									<a href="" ng-if="user.user_role == 14" class="badge badge-primary mr-1 my-1">Main Agent</a>
+									<a href="" ng-if="user.user_role == 15" class="badge badge-primary mr-1 my-1">Sub Agent</a>
+								</div>
+								<hr class="my-0" />
+								<div class="card-body">
+									<h5 class="h6 card-title">About</h5>
+									<ul class="list-unstyled mb-0">
+										<!-- <li class="mb-1"><span class="feather-sm mr-1"> <i class="fa fa-user"></i> </span> {{user.gender}}</li> -->
+										<li class="mb-1"><span class="feather-sm mr-1"> <i class="fa fa-phone"></i> </span> {{user.phone_number}} </li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-8 col-xl-8">
+							<div class="card">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Private info</h5>
+								</div>
+								<div class="card-body">
+									<form name="profileInformationForm" novalidate>
+	                  <div class="row form-group">
+	                    <!-- <div class="col-lg-6">
+	                      <label for="username" class=" form-control-label">Username</label>
+	                      <input type="text" ng-disabled="true" ng-model="user.username" name="username" ng-required="true" ng-minlength="3" ng-maxlength="29" placeholder="Will be used for logging in" class="form-control">
+	                      <span class="text-danger" ng-if="profileInformationForm.username.$error.required && profileInformationForm.$submitted">Enter Username</span>
+	                      <span class="text-danger" ng-if="profileInformationForm.username.$error.minlength && profileInformationForm.$submitted">Add more characters min length is 3</span>
+	                      <span class="text-danger" ng-if="profileInformationForm.username.$error.maxlength && profileInformationForm.$submitted">Reduce characters max length is 29</span>
+	                    </div> -->
+	                    <div class="col-12">
+	                      <label for="fullname" class=" form-control-label">Fullname</label>
+	                      <input type="text" ng-disabled="true" ng-model="user.fullname" name="fullname" ng-required="true" ng-minlength="3" ng-maxlength="49" placeholder="e.g. John Doe" class="form-control">
+	                      <span class="text-danger" ng-if="profileInformationForm.fullname.$error.required && profileInformationForm.$submitted">Enter Full Name</span>
+	                      <span class="text-danger" ng-if="profileInformationForm.fullname.$error.minlength && profileInformationForm.$submitted">Add more characters min length is 3</span>
+	                      <span class="text-danger" ng-if="profileInformationForm.fullname.$error.maxlength && profileInformationForm.$submitted">Reduce characters max length is 49</span>
+	                    </div>
+	                  </div>
+	                  <div class="row form-group">
+											<div class="col-12">
+												<label for="email" class=" form-control-label">Email</label>
+												<input type="email" ng-disabled="true" name="email" ng-model="user.email" ng-required="true" ng-minlength = "3" ng-maxlength = "149" ng-pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" placeholder="e.g. example@domain.com" class="form-control">
+												<span class="text-danger" ng-if="profileInformationForm.email.$error.required && profileInformationForm.$submitted">Enter Email</span>
+												<span class="text-danger" ng-if="profileInformationForm.email.$error.pattern && profileInformationForm.$submitted">Valid Email Addresses Only </span>
+												<span class="text-danger" ng-if="profileInformationForm.email.$error.minlength && profileInformationForm.$submitted">Add more characters min length is 3</span>
+												<span class="text-danger" ng-if="profileInformationForm.email.$error.maxlength && profileInformationForm.$submitted">Reduce characters max length is 149</span>
+											</div>
+	                  </div>
+	                  <div class="row form-group">
+	                    <div class="col-12">
+	                      <label for="phone_number" class=" form-control-label">Phone Number</label>
+	                      <input ng-if="user.user_unique_id == 'Manual-DEV'" ng-disabled="true" type="text" ng-model="user.phone_number" name="phone_number" ng-required="true" ng-minlength = "11" ng-maxlength = "11" placeholder="e.g. 0X0XXXXXXXX" class="form-control">
+	                      <input ng-if="user.user_unique_id != 'Manual-DEV'" ng-disabled="true" type="text" ng-model="user.phone_number" name="phone_number" ng-required="true" ng-pattern="/^\+(?:[0-9]●?){6,14}[0-9]$/" placeholder="e.g. +XXX-XXXX-XXXX" class="form-control">
+	                      <span class="text-danger" ng-if="profileInformationForm.phone_number.$error.required && profileInformationForm.$submitted">Enter Phone Number</span>
+	                      <span class="text-danger" ng-if="profileInformationForm.phone_number.$error.pattern && profileInformationForm.$submitted">Phone Numbers With Country Codes Only</span>
+	                    </div>
+	                  </div>
+
+	                  <!-- <button type="submit" ng-click="profileInformationForm.$valid && saveUserProfileChanges()" class="btn btn-primary mt-3">
+	                    Save <i class="fa fa-save"></i>
+	                  </button> -->
+	                </form>
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="profileStatus">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{profileStatus}}
+										</div>
+									</div>
+									<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="profileSuccessStatus">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Success</strong> {{profileSuccessStatus}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

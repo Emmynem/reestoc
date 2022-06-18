@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+	<script type="text/javascript"
+           src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item {{navigation.nav_link == current_nav_split ? 'active' : ''}}" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+                  <span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="dashboard">Overview</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role == 1 || main_role == 2 || main_role == 3 || main_role == 6)">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+
+									<div class="row mb-3">
+									  <div class="col-md-3 col-6" ng-if="filterShow == false">
+									    <button type="button" class="btn btn-primary" ng-click="filterByDate()"><i class="fa fa-filter"></i> Date</button>
+									  </div>
+									  <div class="col-md-3 col-6 ml-auto text-right">
+									    <button type="button" class="btn btn-primary" ng-click="refreshPage()">
+									      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw align-middle"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+									    </button>
+									  </div>
+									</div>
+
+									<div class="row">
+	                  <div class="col-md-12" ng-if="filterShow == true">
+	                    <div class="card">
+	                      <div class="card-header bg-primary">
+	                        <strong class="card-title text-light">Filter Information</strong>
+	                      </div>
+	                      <div class="card-body card-block">
+	                        <form name="filterForm" novalidate>
+	                          <div class="row form-group">
+	                            <div class="col-12 col-sm-6">
+	                              <label for="startdate" class=" form-control-label">Start Date</label>
+	                              <input type="date" ng-required="true" name="startdate" ng-model="filter_var.startdate" class="form-control">
+	                              <span class="text-danger" ng-if="filterForm.startdate.$error.required && filterForm.$submitted">Select Start Date</span>
+	                            </div>
+	                            <div class="col-12 col-sm-6">
+	                              <label for="enddate" class=" form-control-label">End Date</label>
+	                              <input type="date" ng-required="true" name="enddate" ng-model="filter_var.enddate" class="form-control">
+	                              <span class="text-danger" ng-if="filterForm.enddate.$error.required && filterForm.$submitted">Select End Date</span>
+	                            </div>
+	                            <div class="col-12 col-sm-6 mt-3">
+	                              <span class="text-danger" ng-if="filter_var.startdate > filter_var.enddate && filterForm.$submitted">Invalid Range</span>
+	                            </div>
+	                          </div>
+	                          <button type="submit" ng-click="filterForm.$valid && filter(0)" class="btn btn-success mt-3">
+	                            Filter <i class="fa fa-filter"></i>
+	                          </button>
+	                        </form>
+	                      </div>
+	                    </div>
+	                  </div>
+	                </div>
+
+									<div class="row mt-3">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" name="search" ng-disabled="allOrders == null" ng-model="search" placeholder="Search all records ..." class="form-control">
+                        </div>
+                      </div>
+                    </div>
+										<div class="col-md-12 pb-3">
+											<span class="badge badge-pill badge-success">Total Records : {{allOrdersCount | downloads}}</span>
+										</div>
+                  </div>
+
+									<div class="row" ng-if="allOrdersStatus == undefined">
+										<div class="col-12 d-md-none d-lg-none d-xl-none">
+											<div class="card" ng-repeat="order in allOrders | limitTo:numLimit:start | filter: search">
+												<div class="card-body">
+
+													<div class="media" >
+
+														<div class="media-body">
+															<small class="float-right text-navy">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{order.added_date | fil_date | date}}
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{order.added_date | fil_time | fil_fmt_time}}
+															</small>
+															<strong>{{order.user_fullname}}</strong> <br>
+															<p class="card-text mt-3">Tracking ID - <strong>{{order.tracker_unique_id}}</strong> </p>
+															<p class="card-text mt-3">Contact Via - <a href="tel:{{order.user_phone_number}}">{{order.user_phone_number}}</a> <strong>or</strong> <a href="mailto:{{order.user_email}}">{{order.user_email}}</a> </p>
+															<p class="card-text mt-3">Sub Product Name - {{order.name}} </p>
+															<p class="card-text mt-3">Size - {{order.size}} </p>
+															<p class="card-text mt-3">Price - <span ng-if="order.sales_price != 0"> <del>&#8358;{{order.price | number}}</del> - &#8358;{{order.sales_price | number}} </span> <span ng-if="order.sales_price == 0">&#8358;{{order.price | number}}</span></p>
+															<p class="card-text mt-3">Quantity - {{order.quantity | number}} </p>
+															<p class="card-text mt-3">Shipping Fee - <span ng-if="order.shipping_fee_price == null">No shipping fee</span> <span ng-if="order.shipping_fee_price == '0'" class="badge badge-primary">Free shipping</span> <span ng-if="order.shipping_fee_price != null && order.shipping_fee_price != '0'">&#8358;{{order.shipping_fee_price | number}}</span></p>
+															<p class="card-text mt-3">Total amount - &#8358;{{order.total_order_amount | number}} </p>
+															<p class="card-text mt-3">Payment Method - {{order.payment_method}} </p>
+															<small class="text-muted">Updated -
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{order.last_modified | fil_date | date}}
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{order.last_modified | fil_time | fil_fmt_time }}
+															</small><br>
+															<!-- <span class="badge badge-pill badge-danger float-right mt-3" ng-if="order.status == 0">Deleted</span> <span class="badge badge-pill badge-warning float-right mt-3" ng-if="order.status == 1">Pending</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="order.status == 2">Checkout</span><br> -->
+															<span class="badge badge-pill badge-warning float-right mt-3" ng-if="order.delivery_status == 'Processing'">Processing</span>
+															<span class="badge badge-pill badge-primary float-right mt-3" ng-if="order.delivery_status == 'Paid'">Paid</span>
+															<span class="badge badge-pill badge-primary float-right mt-3" ng-if="order.delivery_status == 'Shipped'">Shipped</span>
+															<span class="badge badge-pill badge-secondary float-right mt-3" ng-if="order.delivery_status == 'Disputed'">Disputed</span>
+															<span class="badge badge-pill badge-secondary float-right mt-3" ng-if="order.delivery_status == 'Refunded'">Refunded</span>
+															<span class="badge badge-pill badge-danger float-right mt-3" ng-if="order.delivery_status == 'Unpaid'">Unpaid</span>
+															<span class="badge badge-pill badge-danger float-right mt-3" ng-if="order.delivery_status == 'Cancelled'">Cancelled</span>
+															<span class="badge badge-pill badge-success float-right mt-3" ng-if="order.delivery_status == 'Completed'">Completed</span><br>
+														</div>
+													</div>
+
+													<button title="View Order Details" data-toggle="modal" data-target="#orderDetailsModal" ng-click="view_order(order.user_unique_id, order.unique_id)" class="btn btn-outline-primary mt-3"><i class="far fa-eye"></i></button>
+
+													<button title="Update Order Paid" data-toggle="modal" data-target="#updateOrderPaidModal" ng-if="order.paid == 0 && order.disputed != 1" ng-click="update_order_paid(order.unique_id, order.user_unique_id, order.tracker_unique_id, order.sub_product_unique_id)" class="btn btn-outline-success mt-3"><i class="far fa-check-square"></i></button>
+													<!-- (order.payment_method == 'Cash' || order.payment_method == 'POS' || order.payment_method == 'Transfer') &&  -->
+
+													<button title="Update Order Not Paid" data-toggle="modal" data-target="#updateOrderNotPaidModal" ng-if="order.paid == 0 && order.disputed != 1" ng-click="update_order_not_paid(order.unique_id, order.user_unique_id, order.tracker_unique_id)" class="btn btn-outline-danger mt-3"><i class="fas fa-times"></i></button>
+													<!-- (order.payment_method == 'Cash' || order.payment_method == 'POS' || order.payment_method == 'Transfer') &&  -->
+
+													<button title="Update Order Shipped" data-toggle="modal" data-target="#updateShipmentModal" ng-if="(order.shipped == 0 || order.shipped == 1) && order.disputed != 1 && order.delivery_status != 'Completed'" ng-click="get_shipment_details(order.unique_id, order.user_unique_id, order.tracker_unique_id)" class="btn btn-outline-primary mt-3"><i class="fas fa-truck"></i></button>
+
+													<button title="Complete Order" data-toggle="modal" data-target="#completeOrderModal" ng-if="order.paid == 1 && order.shipped == 1 && order.disputed != 1 && order.delivery_status != 'Completed'" ng-click="complete_order(order.unique_id, order.user_unique_id, order.tracker_unique_id)" class="btn btn-outline-success mt-3"><i class="far fa-check-circle"></i></button>
+
+												</div>
+
+											</div>
+										</div>
+
+										<div class="col-12 d-none d-md-block d-lg-block">
+                        <!-- DATA TABLE-->
+                        <div class="table-responsive table--no-card m-b-40" ng-if="allOrdersStatus == undefined">
+                            <table class="table table-borderless table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+																				<th>Tracking_ID</th>
+																				<th title="Customer's Name" class="pr-7">Customer</th>
+																				<th title="Contact Number">Contact</th>
+                                        <th title="Sub Product Name" class="pr-7">Sub_Product_Name</th>
+																				<th class="pr-7">Size</th>
+																				<th class="pr-7">Price</th>
+																				<th title="Quantity">Qty</th>
+																				<th class="pr-4">Shipping_Fee</th>
+																				<th>Total_Amount</th>
+																				<th>Payment_Method</th>
+                                        <th>Status</th>
+                                        <th class="pr-7">Created_At</th>
+                                        <th class="pr-7">Updated</th>
+                                        <th class="pr-5">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="order in allOrders | limitTo:numLimit:start | filter: search">
+                                      <td>#{{$index + 1 | number}}</td>
+																			<td><strong>{{order.tracker_unique_id}}</strong></td>
+																			<td>{{order.user_fullname}}</td>
+																			<td>{{order.user_phone_number}}</td>
+                                      <td>{{order.name}}</td>
+																			<td>{{order.size}}</td>
+																			<td><span ng-if="order.sales_price != 0"> <del>&#8358;{{order.price | number}}</del> - &#8358;{{order.sales_price | number}} </span> <span ng-if="order.sales_price == 0">&#8358;{{order.price | number}}</span> </td>
+																			<td>{{order.quantity | number}}</td>
+																			<td><span ng-if="order.shipping_fee_price == null">No shipping fee</span> <span ng-if="order.shipping_fee_price == '0'" class="badge badge-primary">Free shipping</span> <span ng-if="order.shipping_fee_price != null && order.shipping_fee_price != '0'">&#8358;{{order.shipping_fee_price | number}}</span></td>
+																			<td>&#8358;{{order.total_order_amount | number}}</td>
+																			<td>{{order.payment_method}}</td>
+                                      <td>
+																				<span class="badge badge-pill badge-warning" ng-if="order.delivery_status == 'Processing'">Processing</span>
+																				<span class="badge badge-pill badge-primary" ng-if="order.delivery_status == 'Paid'">Paid</span>
+																				<span class="badge badge-pill badge-primary" ng-if="order.delivery_status == 'Shipped'">Shipped</span>
+																				<span class="badge badge-pill badge-secondary" ng-if="order.delivery_status == 'Disputed'">Disputed</span>
+																				<span class="badge badge-pill badge-secondary" ng-if="order.delivery_status == 'Refunded'">Refunded</span>
+																				<span class="badge badge-pill badge-danger" ng-if="order.delivery_status == 'Unpaid'">Unpaid</span>
+																				<span class="badge badge-pill badge-danger" ng-if="order.delivery_status == 'Cancelled'">Cancelled</span>
+																				<span class="badge badge-pill badge-success" ng-if="order.delivery_status == 'Completed'">Completed</span>
+																			</td>
+                                      <td>{{order.added_date | fil_date | date}} @ {{order.added_date | fil_time | fil_fmt_time }}</td>
+                                      <td>{{order.last_modified | fil_date | date}} @ {{order.last_modified | fil_time | fil_fmt_time }}</td>
+                                      <td class="table-action">
+                                        <a title="View Order Details" data-toggle="modal" data-target="#orderDetailsModal" ng-click="view_order(order.user_unique_id, order.unique_id)">
+                                          <span class="text-primary">
+                                            <i class="fas fa-eye"></i>
+                                          </span>
+                                        </a>
+																				<a title="Update Order Paid" data-toggle="modal" data-target="#updateOrderPaidModal" ng-if="order.paid == 0 && order.disputed != 1" ng-click="update_order_paid(order.unique_id, order.user_unique_id, order.tracker_unique_id, order.sub_product_unique_id)">
+																					<!-- (order.payment_method == 'Cash' || order.payment_method == 'POS' || order.payment_method == 'Transfer') &&  -->
+																					<span class="text-success">
+                                            <i class="fas fa-check-square"></i>
+                                          </span>
+                                        </a>
+																				<a title="Update Order Not Paid" data-toggle="modal" data-target="#updateOrderNotPaidModal" ng-if="order.paid == 0 && order.disputed != 1" ng-click="update_order_not_paid(order.unique_id, order.user_unique_id, order.tracker_unique_id)">
+																					<!-- (order.payment_method == 'Cash' || order.payment_method == 'POS' || order.payment_method == 'Transfer') &&  -->
+																					<span class="text-danger">
+                                            <i class="fas fa-times"></i>
+                                          </span>
+                                        </a>
+																				<a title="Update Order Shipped" data-toggle="modal" data-target="#updateShipmentModal" ng-if="(order.shipped == 0 || order.shipped == 1) && order.disputed != 1 && order.delivery_status != 'Completed'" ng-click="get_shipment_details(order.unique_id, order.user_unique_id, order.tracker_unique_id)">
+                                          <span class="text-primary">
+                                            <i class="fas fa-truck"></i>
+                                          </span>
+                                        </a>
+																				<a title="Complete Order" data-toggle="modal" data-target="#completeOrderModal" ng-if="order.paid == 1 && order.shipped == 1 && order.disputed != 1 && order.delivery_status != 'Completed'" ng-click="complete_order(order.unique_id, order.user_unique_id, order.tracker_unique_id)">
+                                          <span class="text-success">
+                                            <i class="fas fa-check-circle"></i>
+                                          </span>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+									</div>
+
+									<nav aria-label="" class="mt-3 text-center" ng-if="allOrdersStatus == undefined">
+										<ul class="pagination pagination-lg">
+											<li class="page-item"><a class="page-link" title="Previous Page" style="cursor: pointer;" ng-hide="hidePrev()" ng-click="PrevPage()"><i class="fas fa-angle-left"></i></a></li>
+											<li class="page-item active"><a class="page-link" title="Current Page">{{currentPage}}</a></li>
+											<li class="page-item"><a class="page-link">...</a></li>
+											<li class="page-item"><a class="page-link" title="Total Number Of Pages">{{pages}}</a></li>
+											<li class="page-item"><a class="page-link" title="Next Page" style="cursor: pointer;" ng-hide="hideNext()" ng-click="nextPage()"><i class="fas fa-angle-right"></i></a></li>
+										</ul>
+									</nav>
+
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="allOrdersStatus != undefined">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{allOrdersStatus}}
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role != 1 && main_role != 2 && main_role != 3 && main_role != 6)">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">You do not have access to this data</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+
+								</div>
+							</div>
+
+							<div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">{{orderDetails.user_fullname}}'s, {{orderDetails.name}} product, Order Details
+												<span class="badge badge-pill badge-warning" ng-if="orderDetails.delivery_status == 'Processing'">Processing</span>
+												<span class="badge badge-pill badge-primary" ng-if="orderDetails.delivery_status == 'Paid'">Paid</span>
+												<span class="badge badge-pill badge-primary" ng-if="orderDetails.delivery_status == 'Shipped'">Shipped</span>
+												<span class="badge badge-pill badge-secondary" ng-if="orderDetails.delivery_status == 'Disputed'">Disputed</span>
+												<span class="badge badge-pill badge-secondary" ng-if="orderDetails.delivery_status == 'Refunded'">Refunded</span>
+												<span class="badge badge-pill badge-danger" ng-if="orderDetails.delivery_status == 'Unpaid'">Unpaid</span>
+												<span class="badge badge-pill badge-danger" ng-if="orderDetails.delivery_status == 'Cancelled'">Cancelled</span>
+												<span class="badge badge-pill badge-success" ng-if="orderDetails.delivery_status == 'Completed'">Completed</span>
+											</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+
+											<div class="card" ng-if="orderDetailsStatus == undefined">
+
+												<div class="card-header bg-primary">
+	                        <strong class="card-title text-light">Order Details</strong>
+	                      </div>
+
+												<img class="card-img-top" style="min-width: 100%; object-fit: cover; max-height: 360px;" ng-src="{{orderDetails.order_product_images[0]}}" alt="{{orderDetails.name}} - Sub Product Image">
+
+												<div class="media p-3" >
+
+													<div class="media-body">
+
+														<ul class="list-group list-group-flush">
+															<li class="list-group-item d-md-none d-lg-none d-xl-none">
+																<small class="float-right text-navy">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{orderDetails.added_date | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{orderDetails.added_date | fil_time | fil_fmt_time}}
+																</small>
+															</li>
+															<li class="list-group-item d-md-none d-lg-none d-xl-none"><strong>Tracking ID : {{orderDetails.tracker_unique_id}}</strong></li>
+															<li class="list-group-item d-none d-md-block d-lg-block"><strong>Tracking ID : {{orderDetails.tracker_unique_id}}</strong>
+																<small class="float-right text-navy">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{orderDetails.added_date | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{orderDetails.added_date | fil_time | fil_fmt_time}}
+																</small>
+															</li>
+															<li class="list-group-item">Contact Via - <a href="tel:{{orderDetails.user_phone_number}}">{{orderDetails.user_phone_number}}</a> <strong>or</strong> <a href="mailto:{{orderDetails.user_email}}">{{orderDetails.user_email}}</a> </li>
+															<li class="list-group-item">Sub Product Name - {{orderDetails.name}}</li>
+															<li class="list-group-item">Size - {{orderDetails.size}}</li>
+															<li class="list-group-item">Price - <span ng-if="orderDetails.sales_price != 0"> <del>&#8358;{{orderDetails.price | number}}</del> - &#8358;{{orderDetails.sales_price | number}} </span> <span ng-if="orderDetails.sales_price == 0">&#8358;{{orderDetails.price | number}}</span></li>
+															<li class="list-group-item">Quantity - {{orderDetails.quantity | number}}</li>
+															<li class="list-group-item">Coupon -
+																<span ng-if="orderDetails.coupon_status != 'Not available'">{{orderDetails.coupon_name}} | <strong>{{orderDetails.coupon_code}}</strong> | &#8358;{{orderDetails.coupon_price | number}} </span>
+																<span ng-if="orderDetails.coupon_status == 'Not available'">{{orderDetails.coupon_status}}</span>
+															</li>
+															<li class="list-group-item">Added Services -
+																<span ng-if="orderDetails.order_offered_services == null">No added service</span>
+																<span ng-if="orderDetails.order_offered_services != null" ng-repeat="offered_service in orderDetails.order_offered_services"> <strong>{{offered_service}} : &#8358; {{orderDetails.order_offered_services_price[$index]}}, </strong> </span>
+															</li>
+															<li class="list-group-item">(Price or Sales Price) * Quantity - &#8358;{{orderDetails.sales_price == 0 ? orderDetails.price * orderDetails.quantity : orderDetails.sales_price * orderDetails.quantity | number}}</li>
+															<li class="list-group-item">Shipping Fee - <span ng-if="orderDetails.shipping_fee_price == null">No shipping fee</span> <span ng-if="orderDetails.shipping_fee_price == '0'" class="badge badge-primary">Free shipping</span> <span ng-if="orderDetails.shipping_fee_price != null && orderDetails.shipping_fee_price != '0'">&#8358;{{orderDetails.shipping_fee_price | number}}</span></li>
+															<li class="list-group-item">Total added service amount - <span ng-if="orderDetails.order_offered_services == null">No added service</span> <span ng-if="orderDetails.order_offered_services != null">&#8358;{{orderDetails.order_offered_services_price_total_amount | number}}</span></li>
+															<li class="list-group-item">Total amount - &#8358;{{orderDetails.total_order_amount | number}}</li>
+															<li class="list-group-item">Payment Method - {{orderDetails.payment_method}}</li>
+															<li ng-if="orderDetails.pickup_location == 1" class="list-group-item">
+																<span> <span class="badge badge-pill badge-info">Pickup Location</span><br> <strong>{{orderDetails.shipping_to_firstname}} {{orderDetails.shipping_to_lastname}} </strong> | Address : {{orderDetails.shipping_to_address}} <br> Info : {{orderDetails.shipping_to_additional_information != null ? orderDetails.shipping_to_additional_information : 'No additional information'}} <br> City : {{orderDetails.shipping_to_city}}, State : {{orderDetails.shipping_to_state}}, Country : {{orderDetails.shipping_to_country}} </span>
+															</li>
+															<li ng-if="addressDetails == null && orderDetails.pickup_location == 0" class="list-group-item">No shipping address</li>
+															<li ng-if="addressDetails != null && orderDetails.pickup_location == 0" class="list-group-item" ng-repeat="address in addressDetails">
+																<span ng-if="address.default_status == 'Yes'"> <span class="badge badge-pill badge-primary">Default</span><br> <strong>{{address.firstname}} {{address.lastname}} </strong> | Address : {{address.address}} <br> Info : {{address.additional_information}} <br> City : {{address.city}}, State : {{address.state}}, Country : {{address.country}} </span>
+																<span ng-if="address.default_status == 'No'"> <span class="badge badge-pill badge-info">Address {{$index + 1}}</span><br> <strong>{{address.firstname}} {{address.lastname}} </strong> | Address : {{address.address}} <br> Info : {{address.additional_information != null ? address.additional_information : 'No additional information'}} <br> City : {{address.city}}, State : {{address.state}}, Country : {{address.country}} </span>
+															</li>
+															<li class="list-group-item">
+																Delivery Status -
+																<span class="badge badge-pill badge-warning" ng-if="orderDetails.delivery_status == 'Processing'">Processing</span>
+																<span class="badge badge-pill badge-primary" ng-if="orderDetails.delivery_status == 'Paid'">Paid</span>
+																<span class="badge badge-pill badge-primary" ng-if="orderDetails.delivery_status == 'Shipped'">Shipped</span>
+																<span class="badge badge-pill badge-secondary" ng-if="orderDetails.delivery_status == 'Disputed'">Disputed</span>
+																<span class="badge badge-pill badge-secondary" ng-if="orderDetails.delivery_status == 'Refunded'">Refunded</span>
+																<span class="badge badge-pill badge-danger" ng-if="orderDetails.delivery_status == 'Unpaid'">Unpaid</span>
+																<span class="badge badge-pill badge-danger" ng-if="orderDetails.delivery_status == 'Cancelled'">Cancelled</span>
+																<span class="badge badge-pill badge-success" ng-if="orderDetails.delivery_status == 'Completed'">Completed</span><br>
+															</li>
+															<li class="list-group-item">
+																<small class="text-muted">Updated -
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{orderDetails.last_modified | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{orderDetails.last_modified | fil_time | fil_fmt_time }}
+																</small>
+															</li>
+															<li class="list-group-item">
+																<button title="Update Order Paid" data-toggle="modal" data-target="#updateOrderPaidAltModal" ng-if="orderDetails.payment_method == 'Cash' && orderDetails.paid == 0 && orderDetails.disputed != 1" ng-click="update_order_paid(orderDetails.unique_id, orderDetails.user_unique_id, orderDetails.tracker_unique_id, orderDetails.sub_product_unique_id)" class="btn btn-outline-primary mt-3"><i class="far fa-check-square"></i></button>
+															</li>
+														</ul>
+														<br>
+														<span class="badge badge-pill badge-danger float-right mt-3" ng-if="orderDetails.status == 0">Deleted</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="orderDetails.status == 1">Active</span><br>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="orderDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{orderDetailsStatus}}
+												</div>
+											</div>
+
+											<div class="card" ng-if="orderShipmentDetailsStatus == undefined">
+
+												<div class="card-header bg-primary">
+	                        <strong class="card-title text-light">Order Shipment History</strong>
+	                      </div>
+
+												<iframe class="card img-top" ng-init="url" id="this_mao_op" width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" ></iframe>
+
+												<div class="media p-3">
+
+													<div class="media-body">
+
+														<ul class="list-group list-group-flush">
+															<li class="list-group-item">
+																<small class="float-right text-navy">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{orderShipmentDetails.added_date | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{orderShipmentDetails.added_date | fil_time | fil_fmt_time}}
+																</small>
+															</li>
+															<li class="list-group-item">Current Location - {{orderShipmentDetails.current_location}}
+															</li>
+															<li class="list-group-item">Rider - {{orderShipmentDetails.rider_fullname}}
+															</li>
+															<li class="list-group-item">Contact - <a href="tel:{{orderShipmentDetails.rider_phone_number}}">{{orderShipmentDetails.rider_phone_number}}</a> <strong>or</strong> <a href="mailto:{{orderShipmentDetails.rider_email}}">{{orderShipmentDetails.rider_email}}</a>
+															</li>
+
+															<li class="list-group-item">
+																Status -
+																<span class="badge badge-pill badge-primary">{{orderShipmentDetails.delivery_status}}</span>
+															</li>
+															<li class="list-group-item">
+																<small class="text-muted">Updated -
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{orderShipmentDetails.last_modified | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{orderShipmentDetails.last_modified | fil_time | fil_fmt_time }}
+																</small>
+															</li>
+														</ul>
+														<br>
+														<span class="badge badge-pill badge-danger float-right mt-3" ng-if="orderShipmentDetails.status == 0">Deleted</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="orderShipmentDetails.status == 1">Active</span><br>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="orderShipmentDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{orderShipmentDetailsStatus}}
+												</div>
+											</div>
+
+											<div class="card" ng-if="orderHistoryDetailsStatus == undefined">
+
+												<div class="card-header bg-primary">
+	                        <strong class="card-title text-light">Order History</strong>
+	                      </div>
+
+												<div class="media p-3" ng-repeat="history in orderHistoryDetails">
+
+													<div class="media-body">
+
+														<ul class="list-group list-group-flush">
+															<li class="list-group-item"><strong>{{$index + 1}}</strong>
+																<small class="float-right text-navy">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{history.added_date | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{history.added_date | fil_time | fil_fmt_time}}
+																</small>
+															</li>
+															<li class="list-group-item">Payment -
+																<span ng-if="history.price == null">No payment</span>
+																<span ng-if="history.price != null"> <strong>&#8358;{{history.price | number}}</strong> </span>
+															</li>
+
+															<li class="list-group-item">
+																Status -
+																<span class="badge badge-pill badge-primary">{{history.completion}}</span>
+															</li>
+															<li class="list-group-item">
+																<small class="text-muted">Updated -
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{history.last_modified | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{history.last_modified | fil_time | fil_fmt_time }}
+																</small>
+															</li>
+														</ul>
+														<br>
+														<span class="badge badge-pill badge-danger float-right mt-3" ng-if="history.status == 0">Deleted</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="history.status == 1">Active</span><br>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="orderHistoryDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{orderHistoryDetailsStatus}}
+												</div>
+											</div>
+
+											<div class="card" ng-if="orderCompletedDetailsStatus == undefined">
+
+												<div class="card-header bg-primary">
+	                        <strong class="card-title text-light">Order Completed History</strong>
+	                      </div>
+
+												<div class="media p-3" ng-repeat="details in orderCompletedDetails">
+
+													<div class="media-body">
+
+														<ul class="list-group list-group-flush">
+															<li class="list-group-item"><strong>{{details.tracker_unique_id}}</strong>
+																<small class="float-right text-navy">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{details.added_date | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{details.added_date | fil_time | fil_fmt_time}}
+																</small>
+															</li>
+															<li class="list-group-item">Sub product - {{details.sub_product_name}}, by {{details.sub_product_size}}</li>
+															<li class="list-group-item">Quantity - {{details.quantity | number}}</li>
+															<li class="list-group-item">Coupon -
+																<span ng-if="details.coupon_code != null">{{details.coupon_name}} | <strong>{{details.coupon_code}}</strong> | {{details.coupon_percentage}}% | &#8358;{{details.coupon_price | number}} </span>
+																<span ng-if="details.coupon_code == null">Not available</span>
+															</li>
+															<li class="list-group-item">Added Services -
+																<span ng-if="details.offered_services == null">No added service</span>
+																<span ng-if="details.offered_services != null"> <strong>{{details.offered_services}} @ &#8358; {{details.offered_services_prices}} respectively </strong> </span>
+															</li>
+															<li class="list-group-item">Total added service amount - <span ng-if="details.offered_services == null">No added service</span> <span ng-if="details.offered_services != null">&#8358;{{details.offered_services_total_amount | number}}</span></li>
+															<li class="list-group-item">Payment Method - <span class="badge badge-pill badge-primary">{{details.payment_method}}</span></li>
+															<li class="list-group-item">
+																<span> <span class="badge badge-pill badge-primary">Shipped to</span><br> <strong>{{details.user_address_fullname}} </strong> | Address : {{details.user_full_address}} <br> City : {{details.city}}, State : {{details.state}}, Country : {{details.country}} </span>
+															</li>
+															<li class="list-group-item">Shipping Fee - <span ng-if="details.shipping_fee_price == '0'" class="badge badge-primary">Free shipping</span> <span ng-if="details.shipping_fee_price != '0'">&#8358;{{details.shipping_fee_price | number}} each ~ &#8358;{{(details.shipping_fee_price * details.quantity) | number}}</span> </li>
+															<li class="list-group-item">Total - &#8358;{{details.total_price | number}}</li>
+															<li class="list-group-item">Rider - {{details.rider_fullname}}
+															</li>
+															<li class="list-group-item">Contact - <a href="tel:{{details.rider_phone_number}}">{{details.rider_phone_number}}</a>
+															</li>
+
+															<li class="list-group-item">
+																<small class="text-muted">Updated -
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{details.last_modified | fil_date | date}}
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{details.last_modified | fil_time | fil_fmt_time }}
+																</small>
+															</li>
+														</ul>
+														<br>
+														<span class="badge badge-pill badge-danger float-right mt-3" ng-if="details.status == 0">Deleted</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="details.status == 1">Active</span><br>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="orderCompletedDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{orderCompletedDetailsStatus}}
+												</div>
+											</div>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="updateOrderPaidModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Order Paid Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-success">Payment completed</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="updateOrderPaidAltModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-colored modal-success modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Order Paid Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-primary">Payment completed</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="updateOrderNotPaidModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Order Unpaid Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-danger">Payment uncompleted</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="updateShipmentModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Update Order Shipment</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<form name="addShipmentForm" novalidate>
+                        <div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="shipment_unique_id" class=" form-control-label">Available Shipments</label>
+		                        <select name="shipment_unique_id" ng-change="change_map()" ng-model="the_shipment_unique_id" ng-required="true" class="form-control">
+															<option ng-repeat="shipment in shipmentsAvailable" value="{{shipment.shipment_unique_id + ',' + shipment.latitude + ',' + shipment.longitude}}">{{shipment.rider_fullname}} - {{shipment.rider_phone_number}}</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="addShipmentForm.shipment_unique_id.$error.required && addShipmentForm.$submitted">Select Shipment</span>
+														<span class="text-danger mt-3" ng-if="shipmentsAvailableStatus">{{shipmentsAvailableStatus}}</span>
+		                      </div>
+                        </div>
+												<div class="row form-group">
+													<div class="col-12 col-md-12">
+														<iframe ng-show="show_map_now" id="this_mao" width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" ></iframe>
+													</div>
+												</div>
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="addShipmentForm.$valid && go_ahead()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+											<!-- <p class="mb-0">Use Bootstrap’s JavaScript modal plugin to add dialogs to your site for lightboxes, user notifications, or completely custom content.</p> -->
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="completeOrderModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Complete Order Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-success">Payment completed</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

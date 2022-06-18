@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-ng-app="access" data-ng-cloak lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<meta name="xdr-auth" content="v2Dh8V031iHJ24iS2hJ41KcnyUAfW0InrECY4gw2gRxY4x1gYYgnMyXwFMjBdLU21vDQYV2WFSbIkuSDHRhQ5nbso6EOXOLowpBOrx5YWV91QvfZrNzSFbBsQeyqg8aA73xpTo9MZiieEonfEyRMDu008tM0WGyPy2YAuUHtvA6VkaZJo7Lb39v0bApNbUaNn6GzedFZdnN5h4DsCdIpjE1HIt2gIgEa3TcFToji1B32kUklt5U7c1RhGRXORqt">
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<base href="/cerotics_store/jomodel/office/">
+	<title ng-bind="pageTitle"></title>
+
+	<link href="css/app.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/summernote/dist/summernote-lite.css">
+</head>
+
+<body>
+
+	<div ng-view autoscroll="true"></div>
+
+	<!-- Jquery JS-->
+  <script src="js/jquery-3.2.1.min.js"></script>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/summernote/dist/summernote-lite.js"></script>
+
+	<script defer src="https://api.xnyder.co/account/sync/auth.min.js"></script>
+
+	<!-- Main JS-->
+  <script src="js/angular.js"></script>
+  <script src="js/angular-summernote.js"></script>
+  <script src="js/angular-datepicker.js"></script>
+  <script src="js/angular-sanitize.js"></script>
+  <script src="js/angular-cookies.js"></script>
+  <script src="js/angular-route.js"></script>
+  <script src="js/angular-message.js"></script>
+  <script src="js/build.js"></script>
+	<script src="js/controllers/dashboardCtrl.js"></script>
+	<script src="js/controllers/allNavigationsCtrl.js"></script>
+	<script src="js/controllers/addNavigationCtrl.js"></script>
+	<script src="js/controllers/productCategoriesCtrl.js"></script>
+	<script src="js/controllers/productMiniCategoriesCtrl.js"></script>
+	<script src="js/controllers/addMiniCategoryImageCtrl.js"></script>
+	<script src="js/controllers/editMiniCategoryImageCtrl.js"></script>
+	<script src="js/controllers/productSubCategoriesCtrl.js"></script>
+	<script src="js/controllers/addSubCategoryImageCtrl.js"></script>
+	<script src="js/controllers/editSubCategoryImageCtrl.js"></script>
+	<script src="js/controllers/productsCtrl.js"></script>
+	<script src="js/controllers/addProductImageCtrl.js"></script>
+	<script src="js/controllers/addSubProductImageCtrl.js"></script>
+	<script src="js/controllers/editProductImageCtrl.js"></script>
+	<script src="js/controllers/editSubProductImageCtrl.js"></script>
+	<script src="js/controllers/brandsCtrl.js"></script>
+	<script src="js/controllers/addBrandImageCtrl.js"></script>
+	<script src="js/controllers/editBrandImageCtrl.js"></script>
+	<script src="js/controllers/subProductsCtrl.js"></script>
+	<script src="js/controllers/cartsCtrl.js"></script>
+	<script src="js/controllers/ordersCtrl.js"></script>
+	<script src="js/controllers/shipmentsCtrl.js"></script>
+	<script src="js/controllers/ridersCtrl.js"></script>
+	<script src="js/controllers/addRiderCtrl.js"></script>
+	<script src="js/controllers/offeredServicesCategoriesCtrl.js"></script>
+	<script src="js/controllers/offeredServicesCtrl.js"></script>
+	<script src="js/controllers/shippingFeesCtrl.js"></script>
+	<script src="js/controllers/managementUsersCtrl.js"></script>
+	<script src="js/controllers/addManagementUserCtrl.js"></script>
+	<script src="js/controllers/agentsCtrl.js"></script>
+	<script src="js/controllers/addAgentCtrl.js"></script>
+	<script src="js/controllers/usersCtrl.js"></script>
+	<script src="js/controllers/addUserCtrl.js"></script>
+	<script src="js/controllers/couponsCtrl.js"></script>
+	<script src="js/controllers/flashDealsCtrl.js"></script>
+	<script src="js/controllers/popUpDealsCtrl.js"></script>
+	<script src="js/controllers/sharingCtrl.js"></script>
+	<script src="js/controllers/addSharingImageCtrl.js"></script>
+	<script src="js/controllers/editSharingImageCtrl.js"></script>
+	<script src="js/controllers/defaultPickupLocationCtrl.js"></script>
+
+	<script src="js/controllers/enquiriesCtrl.js"></script>
+	<script src="js/controllers/fileManagerCtrl.js"></script>
+	<script src="js/controllers/profileCtrl.js"></script>
+	<script src="js/controllers/notificationsCtrl.js"></script>
+	<script src="js/controllers/settingsCtrl.js"></script>
+	<script src="js/controllers/signinCtrl.js"></script>
+
+	<script src="js/controllers/addPostCtrl.js"></script>
+	<script src="js/controllers/allPostsCtrl.js"></script>
+	<script src="js/controllers/checkersCtrl.js"></script>
+  <script src="js/controllers/addCheckerCtrl.js"></script>
+  <script src="js/controllers/categoriesCtrl.js"></script>
+  <script src="js/controllers/editPostCtrl.js"></script>
+  <script src="js/controllers/eventsCtrl.js"></script>
+  <script src="js/controllers/addEventCtrl.js"></script>
+  <script src="js/controllers/editEventCtrl.js"></script>
+	<script src="js/controllers/viewMemberCtrl.js"></script>
+  <script src="js/controllers/ticketingCtrl.js"></script>
+  <script src="js/controllers/editTicketCategoryCtrl.js"></script>
+  <script src="js/controllers/accountCtrl.js"></script>
+  <script src="js/controllers/galleryCtrl.js"></script>
+	<script src="js/controllers/imagesCtrl.js"></script>
+  <script src="js/controllers/newsletterCtrl.js"></script>
+	<script src="js/controllers/addNewsletterCtrl.js"></script>
+  <script src="js/controllers/resetCtrl.js"></script>
+  <script src="js/controllers/shop.js"></script>
+	<script src="js/controllers/addProductCtrl.js"></script>
+	<script src="js/controllers/editProductCtrl.js"></script>
+  <script src="js/ngClipboard.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item {{navigation.nav_link == current_nav_split ? 'active' : ''}}" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="dashboard">Overview</a></li>
+									<li class="breadcrumb-item" ng-if="main_role == 1 || main_role == 2 || main_role == 3 || main_role == 4 || main_role == 5"><a data-toggle="modal" data-target="#addSubProductModal">Add Sub Product</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role == 1 || main_role == 2 || main_role == 3 || main_role == 4 || main_role == 5)">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+
+								    <div class="row mb-3">
+									  <div class="col-md-3 col-6 ml-auto text-right">
+									    <button type="button" class="btn btn-primary" ng-click="refreshPage()">
+									      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw align-middle"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+									    </button>
+									  </div>
+									</div>
+
+									<div class="row mt-3">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" name="search" ng-disabled="allSubProducts == null" ng-model="search" placeholder="Search all records ..." class="form-control">
+                        </div>
+                      </div>
+                    </div>
+										<div class="col-md-12 pb-3">
+											<span class="badge badge-pill badge-success">Total Records : {{allSubProductsCount | downloads}}</span>
+										</div>
+                  </div>
+
+									<div class="row" ng-if="allSubProductsStatus == undefined">
+										<div class="col-12 d-md-none d-lg-none d-xl-none">
+											<div class="card" ng-repeat="sub_product in allSubProducts | limitTo:numLimit:start | filter: search">
+												<div class="card-body">
+
+													<div class="media" >
+
+														<div class="media-body">
+															<small class="float-right text-navy">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{sub_product.added_date | fil_date | date}}
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{sub_product.added_date | fil_time | fil_fmt_time}}
+															</small>
+															<strong>{{sub_product.edit_user_fullname}}</strong> <br>
+															<p class="card-text mt-3">Product - {{sub_product.product_name}} </p>
+															<p class="card-text mt-3">Name - {{sub_product.name}} </p>
+															<p class="card-text mt-3">Size - {{sub_product.size != null ? sub_product.size : 'No size'}} </p>
+															<p class="card-text mt-3">Price - <span ng-if="sub_product.sales_price != 0"> <del>&#8358;{{sub_product.price | number}}</del> - &#8358;{{sub_product.sales_price | number}} </span> <span ng-if="sub_product.sales_price == 0">&#8358;{{sub_product.price | number}}</span></p>
+															<!-- <p class="card-text mt-3">Stock - {{sub_product.stock}} </p>
+															<p class="card-text mt-3">Stock Remaining - {{sub_product.stock_remaining}} </p> -->
+															<!--<p class="card-text mt-3">Favorites - {{sub_product.favorites | number}} </p>-->
+															<small class="text-muted">Updated -
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{sub_product.last_modified | fil_date | date}}
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{sub_product.last_modified | fil_time | fil_fmt_time }}
+															</small><br>
+															<span class="badge badge-pill badge-danger float-right mt-3" ng-if="sub_product.status == 0">Deleted</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="sub_product.status == 1">Active</span><br>
+														</div>
+													</div>
+													<button title="Edit Sub Product Details" data-toggle="modal" data-target="#editSubProductModal" ng-click="edit_sub_product_details(sub_product.unique_id, sub_product.stripped)" class="btn btn-outline-primary mt-3"><i class="far fa-edit"></i></button>
+
+													<button title="Edit Sub Product Prices" data-toggle="modal" data-target="#editSubProductPricesModal" ng-click="edit_sub_product_price_details(sub_product.unique_id, sub_product.stripped, sub_product.name)" class="btn btn-outline-secondary mt-3"><i class="fas fa-edit"></i></button>
+
+													<!-- <button title="Edit Sub Product Stock" data-toggle="modal" data-target="#editSubProductStockModal" ng-click="edit_sub_product_stock_details(sub_product.unique_id, sub_product.stripped, sub_product.name)" class="btn btn-outline-primary mt-3"><i class="fas fa-bar-chart-o"></i></button> -->
+
+													<button title="Delete Sub Product" data-toggle="modal" data-target="#deleteModal" ng-if="sub_product.status == 1" ng-click="delete_sub_product(sub_product.unique_id)" class="btn btn-outline-danger mt-3"><i class="fas fa-trash"></i></button>
+
+													<button title="Restore Sub Product" data-toggle="modal" data-target="#restoreModal" ng-if="sub_product.status == 0" ng-click="restore_sub_product(sub_product.unique_id)" class="btn btn-outline-success mt-3"><i class="fas fa-link"></i></button>
+
+													<button title="Sub Product Images" data-toggle="modal" data-target="#subProductImagesModal" ng-click="get_sub_product_images(sub_product.unique_id, sub_product.name)" class="btn btn-outline-info mt-3"><i class="fas fa-image"></i></button>
+												</div>
+
+											</div>
+										</div>
+
+										<div class="col-12 d-none d-md-block d-lg-block">
+                        <!-- DATA TABLE-->
+                        <div class="table-responsive table--no-card m-b-40" ng-if="allSubProductsStatus == undefined">
+                            <table class="table table-borderless table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>By</th>
+																				<th class="pr-7">Product</th>
+                                        <th class="pr-7">Name</th>
+																				<th>Size</th>
+																				<th class="pr-7">Price</th>
+																				<!-- <th>Stock</th>
+																				<th>Stock Remaining</th> -->
+																				<!--<th>Favorites</th>-->
+                                        <th>Status</th>
+                                        <th class="pr-7">Created_at</th>
+                                        <th class="pr-7">Updated</th>
+                                        <!-- <th>status</th> -->
+                                        <th style="padding:0px 30px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="sub_product in allSubProducts | limitTo:numLimit:start | filter: search">
+                                      <td>#{{$index + 1 | number}}</td>
+                                      <td>{{sub_product.edit_user_fullname}}</td>
+																			<td>{{sub_product.product_name}}</td>
+																			<td>{{sub_product.name}}</td>
+																			<td>{{sub_product.size != null ? sub_product.size : 'No size'}}</td>
+																			<td><span ng-if="sub_product.sales_price != 0"> <del>&#8358;{{sub_product.price | number}}</del> - &#8358;{{sub_product.sales_price | number}} </span> <span ng-if="sub_product.sales_price == 0">&#8358;{{sub_product.price | number}}</span></td>
+																			<!-- <td>{{sub_product.stock}}</td>
+																			<td>{{sub_product.stock_remaining}}</td> -->
+																			<!--<td>{{sub_product.favorites | number}}</td>-->
+                                      <td><span class="badge badge-pill badge-danger" ng-if="sub_product.status == 0">Deleted</span> <span class="badge badge-pill badge-success" ng-if="sub_product.status == 1">Active</span><br></td>
+                                      <td>{{sub_product.added_date | fil_date | date}} @ {{sub_product.added_date | fil_time | fil_fmt_time }}</td>
+                                      <td>{{sub_product.last_modified | fil_date | date}} @ {{sub_product.last_modified | fil_time | fil_fmt_time }}</td>
+                                      <!-- <td ng-if="sub_product.status == 1"><span class="alert-success shift-small">Active</span></td>
+                                      <td ng-if="sub_product.status == 0"><span class="alert-danger shift-small">Deleted</span></td> -->
+                                      <td class="table-action text-center">
+                                        <a title="Edit Sub Product Details" data-toggle="modal" data-target="#editSubProductModal" ng-click="edit_sub_product_details(sub_product.unique_id, sub_product.stripped, sub_product.name)">
+                                          <span class="text-primary">
+                                            <i class="fas fa-edit"></i>
+                                          </span>
+                                        </a>
+																				<a title="Edit Sub Product Prices" data-toggle="modal" data-target="#editSubProductPricesModal" ng-click="edit_sub_product_price_details(sub_product.unique_id, sub_product.stripped, sub_product.name)">
+                                          <span class="text-secondary">
+                                            <i class="fas fa-edit"></i>
+                                          </span>
+                                        </a>
+																				<!-- <a title="Edit Sub Product Stock" data-toggle="modal" data-target="#editSubProductStockModal" ng-click="edit_sub_product_stock_details(sub_product.unique_id, sub_product.stripped, sub_product.name)">
+                                          <span class="text-primary">
+                                            <i class="fas fa-bar-chart-o"></i>
+                                          </span>
+                                        </a> -->
+																				<a title="Delete Sub Product" data-toggle="modal" data-target="#deleteModal" ng-if="sub_product.status == 1" ng-click="delete_sub_product(sub_product.unique_id)">
+                                          <span class="text-danger">
+                                            <i class="fas fa-trash"></i>
+                                          </span>
+                                        </a>
+																				<a title="Restore Sub Product" data-toggle="modal" data-target="#restoreModal" ng-if="sub_product.status == 0" ng-click="restore_sub_product(sub_product.unique_id)">
+                                          <span class="text-success">
+                                            <i class="fas fa-link"></i>
+                                          </span>
+                                        </a>
+																				<a title="Sub Product Images" data-toggle="modal" data-target="#subProductImagesModal" ng-click="get_sub_product_images(sub_product.unique_id, sub_product.name)">
+                                          <span class="text-info">
+                                            <i class="fas fa-image"></i>
+                                          </span>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+									</div>
+
+									<nav aria-label="" class="mt-3 text-center" ng-if="allSubProductsStatus == undefined">
+										<ul class="pagination pagination-lg">
+											<li class="page-item"><a class="page-link" title="Previous Page" style="cursor: pointer;" ng-hide="hidePrev()" ng-click="PrevPage()"><i class="fas fa-angle-left"></i></a></li>
+											<li class="page-item active"><a class="page-link" title="Current Page">{{currentPage}}</a></li>
+											<li class="page-item"><a class="page-link">...</a></li>
+											<li class="page-item"><a class="page-link" title="Total Number Of Pages">{{pages}}</a></li>
+											<li class="page-item"><a class="page-link" title="Next Page" style="cursor: pointer;" ng-hide="hideNext()" ng-click="nextPage()"><i class="fas fa-angle-right"></i></a></li>
+										</ul>
+									</nav>
+
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="allSubProductsStatus != undefined">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{allSubProductsStatus}}
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role != 1 && main_role != 2 && main_role != 3 && main_role != 4 && main_role != 5)">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">You do not have access to this data</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+
+								</div>
+							</div>
+
+							<div class="modal fade" id="addSubProductModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Add Sub Product</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<form name="addSubProductForm" novalidate>
+                        <div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="product_unique_id" class=" form-control-label">Product</label>
+		                        <select name="product_unique_id" ng-change="loadProductAdd(sub_product.add_product_unique_id)" ng-model="sub_product.add_product_unique_id" ng-required="true" class="form-control">
+															<option ng-repeat="sub_product in allProducts" value="{{sub_product.unique_id}}">{{sub_product.name}}</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="addSubProductForm.product_unique_id.$error.required && addSubProductForm.$submitted">Select Product</span>
+														<span class="text-danger mt-3" ng-if="allProductsStatus">{{allProductsStatus}}</span>
+		                      </div>
+                        </div>
+												<div class="row form-group">
+													<div class="col-12 col-md-6">
+														<label for="" class=" form-control-label">Name</label>
+														<input type="text" ng-model="sub_product.add_name" name="sub_product_name" ng-required="true" ng-minlength="3" ng-maxlength="199" placeholder="" class="form-control">
+														<span class="text-danger mt-3" ng-if="addSubProductForm.sub_product_name.$error.required && addSubProductForm.$submitted">Enter Name</span>
+														<span class="text-danger mt-3" ng-if="addSubProductForm.sub_product_name.$error.minlength && addSubProductForm.$submitted">Add more characters min length is 3</span>
+														<span class="text-danger mt-3" ng-if="addSubProductForm.sub_product_name.$error.maxlength && addSubProductForm.$submitted">Reduce characters max length is 199</span>
+													</div>
+													<div class="col-12 col-md-6">
+														<label for="" class=" form-control-label">Size</label>
+														<input type="text" ng-model="sub_product.add_size" name="sub_product_size" ng-required="false" ng-minlength="3" ng-maxlength="29" placeholder="" class="form-control">
+														<span class="text-danger mt-3" ng-if="addSubProductForm.sub_product_size.$error.required && addSubProductForm.$submitted">Enter Size</span>
+														<span class="text-danger mt-3" ng-if="addSubProductForm.sub_product_size.$error.minlength && addSubProductForm.$submitted">Add more characters min length is 3</span>
+														<span class="text-danger mt-3" ng-if="addSubProductForm.sub_product_size.$error.maxlength && addSubProductForm.$submitted">Reduce characters max length is 29</span>
+													</div>
+												</div>
+												<div class="row form-group">
+		                      <div class="col-12 col-md-12">
+		                        <label for="" class=" form-control-label">Description</label>
+														<summernote id="summernote" config="options" ng-model="sub_product.add_description" ng-required="true" ng-minlength="3" ng-maxlength="1999" name="add_description"></summernote>
+		                        <!-- <summernote id="summernote" config="options" ng-model="sub_product.add_description" ng-required="true" ng-minlength="3" ng-maxlength="65500" name="add_description"></summernote> -->
+		                        <span class="text-danger mt-3" ng-if="addSubProductForm.add_description.$error.required && addSubProductForm.$submitted">Enter Description</span>
+		                        <span class="text-danger mt-3" ng-if="addSubProductForm.add_description.$error.minlength && addSubProductForm.$submitted">Add characters min length is 3</span>
+		                        <span class="text-danger mt-3" ng-if="addSubProductForm.add_description.$error.maxlength && addSubProductForm.$submitted">Reduce characters max length reached</span>
+		                      </div>
+		                    </div>
+												<div class="row form-group">
+													<div class="col-12 col-md-6">
+														<label for="" class=" form-control-label">Price</label>
+										        <input class="form-control" type="number" ng-model="sub_product.add_price" name="add_price" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="addSubProductForm.add_price.$error.required && addSubProductForm.$submitted">Enter Price</span>
+										        <span class="text-danger" ng-if="addSubProductForm.add_price.$error.pattern && addSubProductForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="addSubProductForm.add_price.$error.minlength && addSubProductForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="addSubProductForm.add_price.$error.maxlength && addSubProductForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+													<div class="col-12 col-md-6">
+														<label for="" class=" form-control-label">Sales price</label>
+										        <input class="form-control" type="number" ng-model="sub_product.add_sales_price" name="add_sales_price" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="addSubProductForm.add_sales_price.$error.required && addSubProductForm.$submitted">Enter Sales Price</span>
+										        <span class="text-danger" ng-if="addSubProductForm.add_sales_price.$error.pattern && addSubProductForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="addSubProductForm.add_sales_price.$error.minlength && addSubProductForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="addSubProductForm.add_sales_price.$error.maxlength && addSubProductForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div>
+												<!-- <div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="" class=" form-control-label">Stock</label>
+										        <input class="form-control" type="number" ng-model="sub_product.add_stock" name="add_stock" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="addSubProductForm.add_stock.$error.required && addSubProductForm.$submitted">Enter Stock</span>
+										        <span class="text-danger" ng-if="addSubProductForm.add_stock.$error.pattern && addSubProductForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="addSubProductForm.add_stock.$error.minlength && addSubProductForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="addSubProductForm.add_stock.$error.maxlength && addSubProductForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div> -->
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="addSubProductForm.$valid && save_sub_product()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="editSubProductModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Edit {{sub_product_name}} Sub Product</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<form name="editSubProductForm" novalidate>
+												<div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="product_unique_id" class=" form-control-label">Product</label>
+		                        <select name="product_unique_id" ng-change="loadProductAdd(sub_product.edit_product_unique_id)" ng-model="sub_product.edit_product_unique_id" ng-required="true" class="form-control">
+															<option ng-repeat="sub_product in allProducts" value="{{sub_product.unique_id}}">{{sub_product.name}}</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="editSubProductForm.product_unique_id.$error.required && editSubProductForm.$submitted">Select Product</span>
+														<span class="text-danger mt-3" ng-if="allProductsStatus">{{allProductsStatus}}</span>
+		                      </div>
+                        </div>
+												<div class="row form-group">
+													<div class="col-12 col-md-6">
+														<label for="" class=" form-control-label">Name</label>
+														<input type="text" ng-model="sub_product.edit_name" name="sub_product_name" ng-required="true" ng-minlength="3" ng-maxlength="199" placeholder="" class="form-control">
+														<span class="text-danger mt-3" ng-if="editSubProductForm.sub_product_name.$error.required && editSubProductForm.$submitted">Enter Name</span>
+														<span class="text-danger mt-3" ng-if="editSubProductForm.sub_product_name.$error.minlength && editSubProductForm.$submitted">Add more characters min length is 3</span>
+														<span class="text-danger mt-3" ng-if="editSubProductForm.sub_product_name.$error.maxlength && editSubProductForm.$submitted">Reduce characters max length is 199</span>
+													</div>
+													<div class="col-12 col-md-6">
+														<label for="" class=" form-control-label">Size</label>
+														<input type="text" ng-model="sub_product.edit_size" name="sub_product_size" ng-required="false" ng-minlength="3" ng-maxlength="29" placeholder="" class="form-control">
+														<span class="text-danger mt-3" ng-if="editSubProductForm.sub_product_size.$error.required && editSubProductForm.$submitted">Enter Size</span>
+														<span class="text-danger mt-3" ng-if="editSubProductForm.sub_product_size.$error.minlength && editSubProductForm.$submitted">Add more characters min length is 3</span>
+														<span class="text-danger mt-3" ng-if="editSubProductForm.sub_product_size.$error.maxlength && editSubProductForm.$submitted">Reduce characters max length is 29</span>
+													</div>
+												</div>
+												<div class="row form-group">
+		                      <div class="col-12 col-md-12">
+		                        <label for="" class=" form-control-label">Description</label>
+														<summernote id="summernote" config="options" ng-model="sub_product.edit_description" ng-required="true" ng-minlength="3" ng-maxlength="1999" name="edit_description"></summernote>
+		                        <!-- <summernote id="summernote" config="options" ng-model="sub_product.edit_description" ng-required="true" ng-minlength="3" ng-maxlength="65500" name="edit_description"></summernote> -->
+		                        <span class="text-danger mt-3" ng-if="editSubProductForm.edit_description.$error.required && editSubProductForm.$submitted">Enter Description</span>
+		                        <span class="text-danger mt-3" ng-if="editSubProductForm.edit_description.$error.minlength && editSubProductForm.$submitted">Add characters min length is 3</span>
+		                        <span class="text-danger mt-3" ng-if="editSubProductForm.edit_description.$error.maxlength && editSubProductForm.$submitted">Reduce characters max length reached</span>
+		                      </div>
+		                    </div>
+												<!-- <div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="" class=" form-control-label">Stock</label>
+										        <input class="form-control" type="number" ng-model="sub_product.edit_stock" name="edit_stock" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="editSubProductForm.edit_stock.$error.required && editSubProductForm.$submitted">Enter Stock</span>
+										        <span class="text-danger" ng-if="editSubProductForm.edit_stock.$error.pattern && editSubProductForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="editSubProductForm.edit_stock.$error.minlength && editSubProductForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="editSubProductForm.edit_stock.$error.maxlength && editSubProductForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div> -->
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="editSubProductForm.$valid && go_ahead()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="subProductDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{subProductDetailsStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="editSubProductPricesModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Edit {{sub_product_name}} Sub Product Prices</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<form name="editSubProductPricesForm" novalidate>
+												<div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="" class=" form-control-label">Price</label>
+														<input class="form-control" type="number" ng-model="sub_product.edit_price" name="edit_price" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+														<span class="text-danger" ng-if="editSubProductPricesForm.edit_price.$error.required && editSubProductPricesForm.$submitted">Enter Price</span>
+														<span class="text-danger" ng-if="editSubProductPricesForm.edit_price.$error.pattern && editSubProductPricesForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="editSubProductPricesForm.edit_price.$error.minlength && editSubProductPricesForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="editSubProductPricesForm.edit_price.$error.maxlength && editSubProductPricesForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div>
+												<div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="" class=" form-control-label">Sales price</label>
+										        <input class="form-control" type="number" ng-model="sub_product.edit_sales_price" name="edit_sales_price" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="editSubProductPricesForm.edit_sales_price.$error.required && editSubProductPricesForm.$submitted">Enter Sales Price</span>
+										        <span class="text-danger" ng-if="editSubProductPricesForm.edit_sales_price.$error.pattern && editSubProductPricesForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="editSubProductPricesForm.edit_sales_price.$error.minlength && editSubProductPricesForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="editSubProductPricesForm.edit_sales_price.$error.maxlength && editSubProductPricesForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div>
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="editSubProductPricesForm.$valid && go_ahead()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="subProductDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{subProductDetailsStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="editSubProductStockModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Edit {{sub_product_name}} Sub Product Stock</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<form name="editSubProductStockForm" novalidate>
+												<div class="row form-group">
+													<div class="col-12 col-md-12">
+														<label for="" class=" form-control-label">Stock</label>
+										        <input class="form-control" type="number" ng-model="sub_product.edit_stock" name="edit_stock" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="editSubProductStockForm.edit_stock.$error.required && editSubProductStockForm.$submitted">Enter Stock</span>
+										        <span class="text-danger" ng-if="editSubProductStockForm.edit_stock.$error.pattern && editSubProductStockForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="editSubProductStockForm.edit_stock.$error.minlength && editSubProductStockForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="editSubProductStockForm.edit_stock.$error.maxlength && editSubProductStockForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div>
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="editSubProductStockForm.$valid && go_ahead()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="subProductDetailsStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{subProductDetailsStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Delete Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-danger">Delete</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Restore Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-success">Restore</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="subProductImagesModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">{{sub_product_name}} Images <span class="badge badge-pill badge-primary">{{subProductImagesCount}}</span> </h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+
+											<div class="card" ng-if="subProductImagesStatus == undefined" ng-repeat="sub_product in subProductImages">
+
+												<!-- <img class="card-img-top" style="min-width: 100%; object-fit: cover; max-height: 360px;" ng-src="{{sub_product.image}}" alt="{{sub_product.name}} - Product Image"> -->
+												<img class="card-img-top" style="min-width: 100%; object-fit: cover; max-height: 360px;" ng-src="../../images/sub_product_images/{{sub_product.file}}" alt="{{sub_product.name}} - Product Image">
+
+												<ul class="list-group list-group-flush">
+													<li class="list-group-item">By, {{sub_product.added_fullname}}</li>
+													<li class="list-group-item">
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hard-drive align-middle mr-2"><line x1="22" y1="12" x2="2" y2="12"></line><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><line x1="6" y1="16" x2="6.01" y2="16"></line><line x1="10" y1="16" x2="10.01" y2="16"></line></svg> <span class="badge badge-pill badge-primary">{{sub_product.file_size | bytes}}</span>
+													</li>
+													<li class="list-group-item">Created -
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{sub_product.added_date | fil_date | date}}
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{sub_product.added_date | fil_time | fil_fmt_time }}
+													</li>
+													<li class="list-group-item">Updated -
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{sub_product.last_modified | fil_date | date}}
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{sub_product.last_modified | fil_time | fil_fmt_time }}
+													</li>
+													<li class="list-group-item"><span class="badge badge-pill badge-success" ng-if="sub_product.status == 1">Active</span> <span class="badge badge-pill badge-danger" ng-if="sub_product.status == 0">Deleted</span></li>
+												</ul>
+
+												<div class="card-body">
+													<button title="Edit Product Image" ng-click="edit_sub_product_image(sub_product.sub_product_unique_id, sub_product.unique_id)"  class="btn btn-outline-success"><i class="fa fa-edit"></i></button>
+													<!-- data-toggle="modal" data-target="#restoreModal" -->
+													<button title="Delete Image"  ng-click="delete_sub_product_image(sub_product.sub_product_unique_id, sub_product.unique_id)"  class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+													<!-- data-toggle="modal" data-target="#deleteModal" -->
+													<p class="mb-0 text-center mt-3" ng-if="shouldIShow && (unique_id == sub_product.unique_id)">Are you sure you want to complete this action ?</p>
+													<p class="mb-0 text-center mt-3" ng-if="shouldIShow && (unique_id == sub_product.unique_id)">
+														<button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success">
+															Yes
+														</button>
+														<button type="button" ng-disabled="clickOnce" ng-click="removeConfirmModal()" class="btn btn-danger close-modal">
+															No
+														</button>
+													</p>
+
+													<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus && (unique_id == sub_product.unique_id)">
+														<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button> -->
+														<div class="alert-icon">
+															<i class="far fa-fw fa-bell"></i>
+														</div>
+														<div class="alert-message">
+															<strong>Error</strong> {{actionStatus}}
+														</div>
+													</div>
+													<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus && (unique_id == sub_product.unique_id)">
+														<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button> -->
+														<div class="alert-icon">
+															<i class="far fa-fw fa-bell"></i>
+														</div>
+														<div class="alert-message">
+															<strong>Success</strong> {{actionStatus}}
+														</div>
+													</div>
+                        </div>
+
+                      </div>
+
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="subProductImagesStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{subProductImagesStatus}}
+												</div>
+											</div>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-success" ng-click="add_sub_product_image(the_sub_product_unique_id)" data-dismiss="modal">Add Product Image</button>
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

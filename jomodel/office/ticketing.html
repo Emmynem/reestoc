@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Clients
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-member">
+              <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">New Client</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-members">
+              <i class="align-middle" data-feather="database"></i> <span class="align-middle">All Clients</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Blog
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="categories">
+              <i class="align-middle" data-feather="target"></i> <span class="align-middle">Categories</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-post">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Post</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-posts">
+              <i class="align-middle" data-feather="rss"></i> <span class="align-middle">All Posts</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="blog-images">
+              <i class="align-middle" data-feather="file"></i> <span class="align-middle">Images</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Events
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-event">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Event</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item active">
+						<a class="sidebar-link" ng-href="events">
+              <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Events</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" disabled ng-href="add-checker">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">Ticket Checker</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" disabled ng-href="checkers">
+              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Checkers</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Income / Expense
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="account">
+              <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Accounting</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Store
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-product">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Product</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="shop">
+              <i class="align-middle" data-feather="shopping-cart"></i> <span class="align-middle">Shop</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="newsletter">
+              <i class="align-middle" data-feather="mail"></i> <span class="align-middle">Newsletter</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="gallery">
+              <i class="align-middle" data-feather="image"></i> <span class="align-middle">Gallery</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Office Users
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-user">
+              <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">New User</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-users">
+              <i class="align-middle" data-feather="users"></i> <span class="align-middle">Users</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="events">Events</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role != 3 && main_role != 5 && main_role != 6 && main_role != 7) && unlock_feature == true">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Event : {{ticket_details.display_title}} | Total Tickets : <span class="badge badge-pill badge-primary">{{ticket_details.total_no_of_tickets | number}}</span>  | Tickets Left : <span class="badge badge-pill badge-danger">{{ticket_details.tickets_left | number}}</span> </h5>
+								</div>
+								<div class="card-body">
+
+									<div class="card" ng-show="ticket_details.tickets_left == 0">
+										<div class="card-header bg-danger">
+											<h5 class="card-title mb-0 text-light">Can't create category</h5>
+										</div>
+										<div class="card-body bg-danger">
+											<blockquote class="blockquote mb-0">
+			                  <p class="text-light">All tickets are already categorized</p>
+		                    <footer class="blockquote-footer text-light">Error
+		                      <cite title="Error">Occured</cite>
+		                    </footer>
+		                  </blockquote>
+										</div>
+									</div>
+
+									<form ng-show="ticket_details.tickets_left != 0" name="addTicketingForm" novalidate>
+                    <div class="row form-group">
+                      <div class="col-12 col-md-6">
+                        <label for="display_title" class=" form-control-label">Ticket Name</label>
+                        <input type="text" name="ticket_name" ng-model="ticket.ticket_name" ng-required="true" ng-minlength="3" ng-maxlength="30" placeholder="e.g. Gold Ticket, Silver Ticket etc" class="form-control">
+                        <span class="text-danger" ng-if="addTicketingForm.ticket_name.$error.required && addTicketingForm.$submitted">Enter Ticket Name</span>
+                        <span class="text-danger" ng-if="addTicketingForm.ticket_name.$error.minlength && addTicketingForm.$submitted">Add more characters min length is 3</span>
+                        <span class="text-danger" ng-if="addTicketingForm.ticket_name.$error.maxlength && addTicketingForm.$submitted">Reduce characters max length is 30</span>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="ticket_description" class=" form-control-label">Ticket Description</label>
+                        <input type="text" name="ticket_description" ng-model="ticket.ticket_description" ng-required="true" ng-minlength="3" ng-maxlength="40" placeholder="e.g. Vip Entry, Table for six etc" class="form-control">
+                        <span class="text-danger" ng-if="addTicketingForm.ticket_description.$error.required && addTicketingForm.$submitted">Enter Event Name</span>
+                        <span class="text-danger" ng-if="addTicketingForm.ticket_description.$error.minlength && addTicketingForm.$submitted">Add more characters min length is 3</span>
+                        <span class="text-danger" ng-if="addTicketingForm.ticket_description.$error.maxlength && addTicketingForm.$submitted">Reduce characters max length is 40</span>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-12 col-md-6">
+                        <label class="form-control-label">Price for this category <span class="text-success">*In your currency</span> </label>
+                        <input type="number" name="price" ng-model="ticket.price" ng-required="true" ng-minlength="2" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control">
+                        <span class="text-danger" ng-if="addTicketingForm.price.$error.required && addTicketingForm.$submitted">Enter Ticket Category Price</span>
+                        <span class="text-danger" ng-if="addTicketingForm.price.$error.pattern && addTicketingForm.$submitted">Numbers Only </span>
+                        <span class="text-danger" ng-if="addTicketingForm.price.$error.minlength && addTicketingForm.$submitted">Add more characters min length is 1</span>
+                        <span class="text-danger" ng-if="addTicketingForm.price.$error.maxlength && addTicketingForm.$submitted">Reduce characters max length is 11</span>
+
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label class="form-control-label">Total number of tickets <span class="text-success">*In numbers</span></label>
+                        <input type="number" name="total_no_of_ticketing" ng-model="ticket.total_no_of_ticketing" ng-required="true" ng-minlength="1" ng-maxlength="11" placeholder="For this category" ng-pattern="/^\d+$/" class="form-control">
+                        <span class="text-danger" ng-if="addTicketingForm.total_no_of_ticketing.$error.required && addTicketingForm.$submitted">Enter Total Number Of Tickets</span>
+                        <span class="text-danger" ng-if="addTicketingForm.total_no_of_ticketing.$error.pattern && addTicketingForm.$submitted">Numbers Only </span>
+                        <span class="text-danger" ng-if="addTicketingForm.total_no_of_ticketing.$error.minlength && addTicketingForm.$submitted">Add more characters min length is 1</span>
+                        <span class="text-danger" ng-if="addTicketingForm.total_no_of_ticketing.$error.maxlength && addTicketingForm.$submitted">Reduce characters max length reached</span>
+                        <span class="text-danger" ng-if="showInvalidError">Invalid Ticket Number</span>
+
+                      </div>
+
+                    </div>
+
+										<div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+											<div class="col-12">
+												<button type="sumbit" ng-click="addTicketingForm.$valid && saveTicketing()" class="btn btn-success">
+													Save Ticketing <i class="fa fa-check"></i>
+												</button>
+											</div>
+										</div>
+										<p class="mb-0 text-center mt-3" ng-if="shouldIShow">Are you sure you want to complete this action ?</p>
+										<p class="mb-0 text-center mt-3" ng-if="shouldIShow">
+											<button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success">
+												Yes
+											</button>
+											<button type="button" ng-disabled="clickOnce" ng-click="removeConfirmModal()" class="btn btn-danger close-modal">
+												No
+											</button>
+										</p>
+
+										<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+											<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> -->
+											<div class="alert-icon">
+												<i class="far fa-fw fa-bell"></i>
+											</div>
+											<div class="alert-message">
+												<strong>Error</strong> {{actionStatus}}
+											</div>
+										</div>
+										<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+											<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> -->
+											<div class="alert-icon">
+												<i class="far fa-fw fa-bell"></i>
+											</div>
+											<div class="alert-message">
+												<strong>Success</strong> {{actionStatus}}
+											</div>
+										</div>
+                  </form>
+
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="addTicketingStatus">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{addTicketingStatus}}
+										</div>
+									</div>
+									<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="addTicketingSuccessStatus">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Success</strong> {{addTicketingSuccessStatus}}
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role == 3 || main_role == 5 || main_role == 6 || main_role == 7) && unlock_feature == true">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">You do not have access to this data</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && unlock_feature == false">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Feature locked</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">Contact service provider to unlock</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

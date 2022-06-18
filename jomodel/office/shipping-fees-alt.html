@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item {{navigation.nav_link == current_nav_split ? 'active' : ''}}" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="dashboard">Overview</a></li>
+									<li class="breadcrumb-item" ng-if="main_role == 1 || main_role == 2 || main_role == 3"><a data-toggle="modal" data-target="#addShippingFeeModal">New Shipping Fee</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role == 1 || main_role == 2 || main_role == 3)">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+								    
+								    <div class="row mb-3">
+									  <div class="col-md-3 col-6 ml-auto text-right">
+									    <button type="button" class="btn btn-primary" ng-click="refreshPage()">
+									      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw align-middle"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+									    </button>
+									  </div>
+									</div>
+
+									<div class="row mt-3">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" name="search" ng-disabled="allShippingFees == null" ng-model="search" placeholder="Search all records ..." class="form-control">
+                        </div>
+                      </div>
+                    </div>
+										<div class="col-md-12 pb-3">
+											<span class="badge badge-pill badge-success">Total Records : {{allShippingFees.length | downloads}}</span>
+										</div>
+                  </div>
+
+									<div class="row" ng-if="allShippingFeesStatus == undefined">
+										<div class="col-12 d-md-none d-lg-none d-xl-none">
+											<div class="card" ng-repeat="shipping_fee in allShippingFees | limitTo:numLimit:start | filter: search">
+												<div class="card-body">
+
+													<div class="media" >
+
+														<div class="media-body">
+															<small class="float-right text-navy">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{shipping_fee.added_date | fil_date | date}}
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{shipping_fee.added_date | fil_time | fil_fmt_time}}
+															</small>
+															<strong>{{shipping_fee.edit_user_fullname}}</strong> <br>
+															<p class="card-text mt-3">Sub Product - {{shipping_fee.sub_product_name}} </p>
+															<p class="card-text mt-3">Size - {{shipping_fee.sub_product_size}} </p>
+															<p class="card-text mt-3">City - {{shipping_fee.city}} </p>
+															<p class="card-text mt-3">State - {{shipping_fee.state}} </p>
+															<p class="card-text mt-3">Country - {{shipping_fee.country}} </p>
+															<p class="card-text mt-3">Price - <span class="badge badge-pill badge-primary" ng-if="shipping_fee.price == 0">Free</span> <span ng-if="shipping_fee.price != 0">&#8358;{{shipping_fee.price | number}}</span> </p>
+															<small class="text-muted">Updated -
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar align-middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {{shipping_fee.last_modified | fil_date | date}}
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-middle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> {{shipping_fee.last_modified | fil_time | fil_fmt_time }}
+															</small><br>
+															<span class="badge badge-pill badge-danger float-right mt-3" ng-if="shipping_fee.status == 0">Deleted</span> <span class="badge badge-pill badge-success float-right mt-3" ng-if="shipping_fee.status == 1">Active</span><br>
+														</div>
+													</div>
+													<button title="Edit Shipping Fee Details" data-toggle="modal" data-target="#editShippingFeeModal" ng-click="edit_shipping_fee(shipping_fee.unique_id, shipping_fee.sub_product_unique_id, shipping_fee.city, shipping_fee.state, shipping_fee.country, shipping_fee.price, shipping_fee.sub_product_name, shipping_fee.sub_product_size)" class="btn btn-outline-primary mt-3"><i class="far fa-edit"></i></button>
+
+													<button title="Delete Shipping Fee" data-toggle="modal" data-target="#deleteModal" ng-if="shipping_fee.status == 1 && (main_role == 1 || result_u == shipping_fee.user_unique_id)" ng-click="delete_shipping_fee(shipping_fee.unique_id)" class="btn btn-outline-danger mt-3"><i class="fas fa-trash"></i></button>
+
+													<button title="Restore Shipping Fee" data-toggle="modal" data-target="#restoreModal" ng-if="shipping_fee.status == 0 && (main_role == 1 || result_u == shipping_fee.user_unique_id)" ng-click="restore_shipping_fee(shipping_fee.unique_id)" class="btn btn-outline-success mt-3"><i class="fas fa-link"></i></button>
+
+												</div>
+
+											</div>
+										</div>
+
+										<div class="col-12 d-none d-md-block d-lg-block">
+                        <!-- DATA TABLE-->
+                        <div class="table-responsive table--no-card m-b-40" ng-if="allShippingFeesStatus == undefined">
+                            <table class="table table-borderless table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>By</th>
+																				<th class="pr-7">Sub_Product</th>
+																				<th class="pr-7">Size</th>
+																				<th>City</th>
+                                        <th>State</th>
+																				<th>Country</th>
+																				<th>Price</th>
+                                        <th>Status</th>
+                                        <th class="pr-7">Created_at</th>
+                                        <th class="pr-7">Updated</th>
+                                        <!-- <th>status</th> -->
+                                        <th class="pr-4">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="shipping_fee in allShippingFees | limitTo:numLimit:start | filter: search">
+                                      <td>#{{$index + 1 | number}}</td>
+                                      <td>{{shipping_fee.edit_user_fullname}}</td>
+                                      <td>{{shipping_fee.sub_product_name}}</td>
+																			<td>{{shipping_fee.sub_product_size}}</td>
+																			<td>{{shipping_fee.city}}</td>
+																			<td>{{shipping_fee.state}}</td>
+																			<td>{{shipping_fee.country}}</td>
+																			<td><span class="badge badge-pill badge-primary" ng-if="shipping_fee.price == 0">Free</span> <span ng-if="shipping_fee.price != 0">&#8358;{{shipping_fee.price | number}}</span></td>
+                                      <td><span class="badge badge-pill badge-danger" ng-if="shipping_fee.status == 0">Deleted</span> <span class="badge badge-pill badge-success" ng-if="shipping_fee.status == 1">Active</span><br></td>
+                                      <td>{{shipping_fee.added_date | fil_date | date}} @ {{shipping_fee.added_date | fil_time | fil_fmt_time }}</td>
+                                      <td>{{shipping_fee.last_modified | fil_date | date}} @ {{shipping_fee.last_modified | fil_time | fil_fmt_time }}</td>
+                                      <!-- <td ng-if="shipping_fee.status == 1"><span class="alert-success shift-small">Active</span></td>
+                                      <td ng-if="shipping_fee.status == 0"><span class="alert-danger shift-small">Deleted</span></td> -->
+                                      <td class="table-action">
+                                        <a title="Edit Shipping Fee Details" data-toggle="modal" data-target="#editShippingFeeModal" ng-click="edit_shipping_fee(shipping_fee.unique_id, shipping_fee.sub_product_unique_id, shipping_fee.city, shipping_fee.state, shipping_fee.country, shipping_fee.price, shipping_fee.sub_product_name, shipping_fee.sub_product_size)">
+                                          <span class="text-primary">
+                                            <i class="fas fa-edit"></i>
+                                          </span>
+                                        </a>
+																				<a title="Delete Shipping Fee" data-toggle="modal" data-target="#deleteModal" ng-if="shipping_fee.status == 1 && (main_role == 1 || result_u == shipping_fee.user_unique_id)" ng-click="delete_shipping_fee(shipping_fee.unique_id)">
+                                          <span class="text-danger">
+                                            <i class="fas fa-trash"></i>
+                                          </span>
+                                        </a>
+																				<a title="Restore Shipping Fee" data-toggle="modal" data-target="#restoreModal" ng-if="shipping_fee.status == 0 && (main_role == 1 || result_u == shipping_fee.user_unique_id)" ng-click="restore_shipping_fee(shipping_fee.unique_id)">
+                                          <span class="text-success">
+                                            <i class="fas fa-link"></i>
+                                          </span>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+									</div>
+
+									<nav aria-label="" class="mt-3 text-center" ng-if="allShippingFeesStatus == undefined">
+										<ul class="pagination pagination-lg">
+											<li class="page-item"><a class="page-link" title="Previous Page" style="cursor: pointer;" ng-hide="hidePrev()" ng-click="PrevPage()"><i class="fas fa-angle-left"></i></a></li>
+											<li class="page-item active"><a class="page-link" title="Current Page">{{currentPage}}</a></li>
+											<li class="page-item"><a class="page-link">...</a></li>
+											<li class="page-item"><a class="page-link" title="Total Number Of Pages">{{pages}}</a></li>
+											<li class="page-item"><a class="page-link" title="Next Page" style="cursor: pointer;" ng-hide="hideNext()" ng-click="nextPage()"><i class="fas fa-angle-right"></i></a></li>
+										</ul>
+									</nav>
+
+									<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="allShippingFeesStatus != undefined">
+										<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button> -->
+										<div class="alert-icon">
+											<i class="far fa-fw fa-bell"></i>
+										</div>
+										<div class="alert-message">
+											<strong>Error</strong> {{allShippingFeesStatus}}
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role != 1 && main_role != 2 && main_role != 3)">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">You do not have access to this data</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+
+								</div>
+							</div>
+
+							<div class="modal fade" id="addShippingFeeModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Add Shipping Fee</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+
+											<form name="addShippingFeeForm" novalidate>
+												<div class="row form-group">
+													<div class="col-12 col-md-4">
+														<label for="country" class=" form-control-label">Nationality</label>
+		                        <select name="country" ng-model="shipping_fee.add_country" ng-required="true" class="form-control">
+															<optgroup id="country-optgroup-Africa" label="Africa">
+										            <option value="Algeria">Algeria</option>
+										            <option value="Angola">Angola</option>
+										            <option value="Benin">Benin</option>
+										            <option value="Botswana">Botswana</option>
+										            <option value="Burkina Faso">Burkina Faso</option>
+										            <option value="Burundi">Burundi</option>
+										            <option value="Cameroon">Cameroon</option>
+										            <option value="Cape Verde">Cape Verde</option>
+										            <option value="Central African Republic">Central African Republic</option>
+										            <option value="Chad">Chad</option>
+										            <option value="Comoros">Comoros</option>
+										            <option value="Congo - Brazzaville">Congo - Brazzaville</option>
+										            <option value="Congo - Kinshasa">Congo - Kinshasa</option>
+										            <option value="Côte d’Ivoire">Côte d’Ivoire</option>
+										            <option value="Djibouti">Djibouti</option>
+										            <option value="Egypt">Egypt</option>
+										            <option value="Equatorial Guinea">Equatorial Guinea</option>
+										            <option value="Eritrea">Eritrea</option>
+										            <option value="Ethiopia">Ethiopia</option>
+										            <option value="Gabon">Gabon</option>
+										            <option value="Gambia">Gambia</option>
+										            <option value="Ghana">Ghana</option>
+										            <option value="Guinea">Guinea</option>
+										            <option value="Guinea-Bissau">Guinea-Bissau</option>
+										            <option value="Kenya">Kenya</option>
+										            <option value="Lesotho">Lesotho</option>
+										            <option value="Liberia">Liberia</option>
+										            <option value="Libya">Libya</option>
+										            <option value="Madagascar">Madagascar</option>
+										            <option value="Malawi">Malawi</option>
+										            <option value="Mali">Mali</option>
+										            <option value="Mauritania">Mauritania</option>
+										            <option value="Mauritius">Mauritius</option>
+										            <option value="Mayotte">Mayotte</option>
+										            <option value="Morocco">Morocco</option>
+										            <option value="Mozambique">Mozambique</option>
+										            <option value="Namibia">Namibia</option>
+										            <option value="Niger">Niger</option>
+										            <option value="Nigeria" selected>Nigeria</option>
+										            <option value="Rwanda">Rwanda</option>
+										            <option value="Réunion">Réunion</option>
+										            <option value="Saint Helena">Saint Helena</option>
+										            <option value="Senegal">Senegal</option>
+										            <option value="Seychelles">Seychelles</option>
+										            <option value="Sierra Leone">Sierra Leone</option>
+										            <option value="Somalia">Somalia</option>
+										            <option value="South Africa">South Africa</option>
+										            <option value="Sudan">Sudan</option>
+										            <option value="Swaziland">Swaziland</option>
+										            <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
+										            <option value="Tanzania">Tanzania</option>
+										            <option value="Togo">Togo</option>
+										            <option value="Tunisia">Tunisia</option>
+										            <option value="Uganda">Uganda</option>
+										            <option value="Western Sahara">Western Sahara</option>
+										            <option value="Zambia">Zambia</option>
+										            <option value="Zimbabwe">Zimbabwe</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Americas" label="Americas">
+											            <option value="Anguilla">Anguilla</option>
+											            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+											            <option value="Argentina">Argentina</option>
+											            <option value="Aruba">Aruba</option>
+											            <option value="Bahamas">Bahamas</option>
+											            <option value="Barbados">Barbados</option>
+											            <option value="Belize">Belize</option>
+											            <option value="Bermuda">Bermuda</option>
+											            <option value="Bolivia">Bolivia</option>
+											            <option value="Brazil">Brazil</option>
+											            <option value="British Virgin Islands">British Virgin Islands</option>
+											            <option value="Canada">Canada</option>
+											            <option value="Cayman Islands">Cayman Islands</option>
+											            <option value="Chile">Chile</option>
+											            <option value="Colombia">Colombia</option>
+											            <option value="Costa Rica">Costa Rica</option>
+											            <option value="Cuba">Cuba</option>
+											            <option value="Dominica">Dominica</option>
+											            <option value="Dominican Republic">Dominican Republic</option>
+											            <option value="Ecuador">Ecuador</option>
+											            <option value="El Salvador">El Salvador</option>
+											            <option value="Falkland Islands">Falkland Islands</option>
+											            <option value="French Guiana">French Guiana</option>
+											            <option value="Greenland">Greenland</option>
+											            <option value="Grenada">Grenada</option>
+											            <option value="Guadeloupe">Guadeloupe</option>
+											            <option value="Guatemala">Guatemala</option>
+											            <option value="Guyana">Guyana</option>
+											            <option value="Haiti">Haiti</option>
+											            <option value="Honduras">Honduras</option>
+											            <option value="Jamaica">Jamaica</option>
+											            <option value="Martinique">Martinique</option>
+											            <option value="Mexico">Mexico</option>
+											            <option value="Montserrat">Montserrat</option>
+											            <option value="Netherlands Antilles">Netherlands Antilles</option>
+											            <option value="Nicaragua">Nicaragua</option>
+											            <option value="Panama">Panama</option>
+											            <option value="Paraguay">Paraguay</option>
+											            <option value="Peru">Peru</option>
+											            <option value="Puerto Rico">Puerto Rico</option>
+											            <option value="Saint Barthélemy">Saint Barthélemy</option>
+											            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+											            <option value="Saint Lucia">Saint Lucia</option>
+											            <option value="Saint Martin">Saint Martin</option>
+											            <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
+											            <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+											            <option value="Suriname">Suriname</option>
+											            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+											            <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+											            <option value="U.S. Virgin Islands">U.S. Virgin Islands</option>
+											            <option value="United States">United States</option>
+											            <option value="Uruguay">Uruguay</option>
+											            <option value="Venezuela">Venezuela</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Asia" label="Asia">
+											            <option value="Afghanistan">Afghanistan</option>
+											            <option value="Armenia">Armenia</option>
+											            <option value="Azerbaijan">Azerbaijan</option>
+											            <option value="Bahrain">Bahrain</option>
+											            <option value="Bangladesh">Bangladesh</option>
+											            <option value="Bhutan">Bhutan</option>
+											            <option value="Brunei">Brunei</option>
+											            <option value="Cambodia">Cambodia</option>
+											            <option value="China">China</option>
+											            <option value="Georgia">Georgia</option>
+											            <option value="Hong Kong SAR China">Hong Kong SAR China</option>
+											            <option value="India">India</option>
+											            <option value="Indonesia">Indonesia</option>
+											            <option value="Iran">Iran</option>
+											            <option value="Iraq">Iraq</option>
+											            <option value="Israel">Israel</option>
+											            <option value="Japan">Japan</option>
+											            <option value="Jordan">Jordan</option>
+											            <option value="Kazakhstan">Kazakhstan</option>
+											            <option value="Kuwait">Kuwait</option>
+											            <option value="Kyrgyzstan">Kyrgyzstan</option>
+											            <option value="Laos">Laos</option>
+											            <option value="Lebanon">Lebanon</option>
+											            <option value="Macau SAR China">Macau SAR China</option>
+											            <option value="Malaysia">Malaysia</option>
+											            <option value="Maldives">Maldives</option>
+											            <option value="Mongolia">Mongolia</option>
+											            <option value="Myanmar [Burma]">Myanmar [Burma]</option>
+											            <option value="Nepal">Nepal</option>
+											            <option value="Neutral Zone">Neutral Zone</option>
+											            <option value="North Korea">North Korea</option>
+											            <option value="Oman">Oman</option>
+											            <option value="Pakistan">Pakistan</option>
+											            <option value="Palestinian Territories">Palestinian Territories</option>
+											            <option value="People's Democratic Republic of Yemen">People's Democratic Republic of Yemen</option>
+											            <option value="Philippines">Philippines</option>
+											            <option value="Qatar">Qatar</option>
+											            <option value="Saudi Arabia">Saudi Arabia</option>
+											            <option value="Singapore">Singapore</option>
+											            <option value="South Korea">South Korea</option>
+											            <option value="Sri Lanka">Sri Lanka</option>
+											            <option value="Syria">Syria</option>
+											            <option value="Taiwan">Taiwan</option>
+											            <option value="Tajikistan">Tajikistan</option>
+											            <option value="Thailand">Thailand</option>
+											            <option value="Timor-Leste">Timor-Leste</option>
+											            <option value="Turkey">Turkey</option>
+											            <option value="Turkmenistan">Turkmenistan</option>
+											            <option value="United Arab Emirates">United Arab Emirates</option>
+											            <option value="Uzbekistan">Uzbekistan</option>
+											            <option value="Vietnam">Vietnam</option>
+											            <option value="Yemen">Yemen</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Europe" label="Europe">
+											            <option value="Albania">Albania</option>
+											            <option value="Andorra">Andorra</option>
+											            <option value="Austria">Austria</option>
+											            <option value="Belarus">Belarus</option>
+											            <option value="Belgium">Belgium</option>
+											            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+											            <option value="Bulgaria">Bulgaria</option>
+											            <option value="Croatia">Croatia</option>
+											            <option value="Cyprus">Cyprus</option>
+											            <option value="Czech Republic">Czech Republic</option>
+											            <option value="Denmark">Denmark</option>
+											            <option value="East Germany">East Germany</option>
+											            <option value="Estonia">Estonia</option>
+											            <option value="Faroe Islands">Faroe Islands</option>
+											            <option value="Finland">Finland</option>
+											            <option value="France">France</option>
+											            <option value="Germany">Germany</option>
+											            <option value="Gibraltar">Gibraltar</option>
+											            <option value="Greece">Greece</option>
+											            <option value="Guernsey">Guernsey</option>
+											            <option value="Hungary">Hungary</option>
+											            <option value="Iceland">Iceland</option>
+											            <option value="Ireland">Ireland</option>
+											            <option value="Isle of Man">Isle of Man</option>
+											            <option value="Italy">Italy</option>
+											            <option value="Jersey">Jersey</option>
+											            <option value="Latvia">Latvia</option>
+											            <option value="Liechtenstein">Liechtenstein</option>
+											            <option value="Lithuania">Lithuania</option>
+											            <option value="Luxembourg">Luxembourg</option>
+											            <option value="Macedonia">Macedonia</option>
+											            <option value="Malta">Malta</option>
+											            <option value="Metropolitan France">Metropolitan France</option>
+											            <option value="Moldova">Moldova</option>
+											            <option value="Monaco">Monaco</option>
+											            <option value="Montenegro">Montenegro</option>
+											            <option value="Netherlands">Netherlands</option>
+											            <option value="Norway">Norway</option>
+											            <option value="Poland">Poland</option>
+											            <option value="Portugal">Portugal</option>
+											            <option value="Romania">Romania</option>
+											            <option value="Russia">Russia</option>
+											            <option value="San Marino">San Marino</option>
+											            <option value="Serbia">Serbia</option>
+											            <option value="Serbia and Montenegro">Serbia and Montenegro</option>
+											            <option value="Slovakia">Slovakia</option>
+											            <option value="Slovenia">Slovenia</option>
+											            <option value="Spain">Spain</option>
+											            <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
+											            <option value="Sweden">Sweden</option>
+											            <option value="Switzerland">Switzerland</option>
+											            <option value="Ukraine">Ukraine</option>
+											            <option value="Union of Soviet Socialist Republics">Union of Soviet Socialist Republics</option>
+											            <option value="United Kingdom">United Kingdom</option>
+											            <option value="Vatican City">Vatican City</option>
+											            <option value="Åland Islands">Åland Islands</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Oceania" label="Oceania">
+											            <option value="American Samoa">American Samoa</option>
+											            <option value="Antarctica">Antarctica</option>
+											            <option value="Australia">Australia</option>
+											            <option value="Bouvet Island">Bouvet Island</option>
+											            <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+											            <option value="Christmas Island">Christmas Island</option>
+											            <option value="Cocos [Keeling] Islands">Cocos [Keeling] Islands</option>
+											            <option value="Cook Islands">Cook Islands</option>
+											            <option value="Fiji">Fiji</option>
+											            <option value="French Polynesia">French Polynesia</option>
+											            <option value="French Southern Territories">French Southern Territories</option>
+											            <option value="Guam">Guam</option>
+											            <option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option>
+											            <option value="Kiribati">Kiribati</option>
+											            <option value="Marshall Islands">Marshall Islands</option>
+											            <option value="Micronesia">Micronesia</option>
+											            <option value="Nauru">Nauru</option>
+											            <option value="New Caledonia">New Caledonia</option>
+											            <option value="New Zealand">New Zealand</option>
+											            <option value="Niue">Niue</option>
+											            <option value="Norfolk Island">Norfolk Island</option>
+											            <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+											            <option value="Palau">Palau</option>
+											            <option value="Papua New Guinea">Papua New Guinea</option>
+											            <option value="Pitcairn Islands">Pitcairn Islands</option>
+											            <option value="Samoa">Samoa</option>
+											            <option value="Solomon Islands">Solomon Islands</option>
+											            <option value="South Georgia and the South Sandwich Islands">South Georgia and the South Sandwich Islands</option>
+											            <option value="Tokelau">Tokelau</option>
+											            <option value="Tonga">Tonga</option>
+											            <option value="Tuvalu">Tuvalu</option>
+											            <option value="U.S. Minor Outlying Islands">U.S. Minor Outlying Islands</option>
+											            <option value="Vanuatu">Vanuatu</option>
+											            <option value="Wallis and Futuna">Wallis and Futuna</option>
+											        </optgroup>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.country.$error.required && addShippingFeeForm.$submitted">Select Country</span>
+		                      </div>
+													<div class="col-12 col-md-4">
+														<label for="" class=" form-control-label">State</label>
+		                        <input ng-if="shipping_fee.add_country != 'Nigeria'" type="text" ng-model="shipping_fee.add_state" name="state" ng-required="true" ng-minlength="3" ng-maxlength="50" placeholder="What's the state ?" class="form-control">
+														<select ng-if="shipping_fee.add_country == 'Nigeria'" ng-change="change_lga(shipping_fee.add_state)" name="state" ng-model="shipping_fee.add_state" ng-required="true" class="form-control">
+															<option value="" disabled selected>--Select State--</option>
+						                  <option value="Abia">Abia</option>
+						                  <option value="Adamawa">Adamawa</option>
+						                  <option value="Akwa Ibom">Akwa Ibom</option>
+						                  <option value="Anambra">Anambra</option>
+						                  <option value="Bauchi">Bauchi</option>
+						                  <option value="Bayelsa">Bayelsa</option>
+						                  <option value="Benue">Benue</option>
+						                  <option value="Borno">Borno</option>
+						                  <option value="Cross River">Cross River</option>
+						                  <option value="Delta">Delta</option>
+						                  <option value="Ebonyi">Ebonyi</option>
+						                  <option value="Edo">Edo</option>
+						                  <option value="Ekiti">Ekiti</option>
+						                  <option value="Enugu">Enugu</option>
+						                  <option value="Abuja">Federal Capital Territory</option>
+						                  <option value="Gombe">Gombe</option>
+						                  <option value="Imo">Imo</option>
+						                  <option value="Jigawa">Jigawa</option>
+						                  <option value="Kaduna">Kaduna</option>
+						                  <option value="Kano">Kano</option>
+						                  <option value="Katsina">Katsina</option>
+						                  <option value="Kebbi">Kebbi</option>
+						                  <option value="Kogi">Kogi</option>
+						                  <option value="Kwara">Kwara</option>
+						                  <option value="Lagos">Lagos</option>
+						                  <option value="Nasarawa">Nasarawa</option>
+						                  <option value="Niger">Niger</option>
+						                  <option value="Ogun">Ogun</option>
+						                  <option value="Ondo">Ondo</option>
+						                  <option value="Osun">Osun</option>
+						                  <option value="Oyo">Oyo</option>
+						                  <option value="Plateau">Plateau</option>
+						                  <option value="Rivers">Rivers</option>
+						                  <option value="Sokoto">Sokoto</option>
+						                  <option value="Taraba">Taraba</option>
+						                  <option value="Yobe">Yobe</option>
+						                  <option value="Zamfara">Zamfara</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.state.$error.required && addShippingFeeForm.$submitted && shipping_fee.country != 'Nigeria'">Enter State</span>
+														<span class="text-danger mt-3" ng-if="addShippingFeeForm.state.$error.required && addShippingFeeForm.$submitted && shipping_fee.country == 'Nigeria'">Select State</span>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.state.$error.minlength && addShippingFeeForm.$submitted">Add more characters min length is 3</span>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.state.$error.maxlength && addShippingFeeForm.$submitted">Reduce characters max length is 50</span>
+		                      </div>
+													<div class="col-12 col-md-4">
+														<label for="post_title" class=" form-control-label">City / Municipality</label>
+		                        <input ng-if="shipping_fee.add_country != 'Nigeria'" type="text" ng-model="shipping_fee.add_city" name="city" ng-required="true" ng-minlength="3" ng-maxlength="50" placeholder="What's the city / municipality ?" class="form-control">
+														<select ng-if="shipping_fee.add_country == 'Nigeria'" name="city" ng-model="shipping_fee.add_city" ng-required="true" class="form-control">
+															<option value="" disabled selected>--Select City / Municipality--</option>
+						                  <option ng-repeat="lga in lgas" value="{{lga}}">{{lga}}</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.city.$error.required && addShippingFeeForm.$submitted && shipping_fee.country != 'Nigeria'">Enter City / Municipality</span>
+														<span class="text-danger mt-3" ng-if="addShippingFeeForm.city.$error.required && addShippingFeeForm.$submitted && shipping_fee.country == 'Nigeria'">Select City / Municipality</span>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.city.$error.minlength && addShippingFeeForm.$submitted">Add more characters min length is 3</span>
+		                        <span class="text-danger mt-3" ng-if="addShippingFeeForm.city.$error.maxlength && addShippingFeeForm.$submitted">Reduce characters max length is 50</span>
+		                      </div>
+		                    </div>
+												<div class="row form-group">
+													<div class="col-12">
+														<label for="" class=" form-control-label">Price</label>
+										        <input class="form-control" type="number" ng-model="shipping_fee.add_price" name="add_price" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="addShippingFeeForm.add_price.$error.required && addShippingFeeForm.$submitted">Enter Price</span>
+										        <span class="text-danger" ng-if="addShippingFeeForm.add_price.$error.pattern && addShippingFeeForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="addShippingFeeForm.add_price.$error.minlength && addShippingFeeForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="addShippingFeeForm.add_price.$error.maxlength && addShippingFeeForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div>
+												<div class="row form-group">
+													<div class="col-12 pb-3">
+														<label for="" class=" form-control-label">Sub Products</label>
+														<input type="text" ng-model="search_products" placeholder="Filter products ... " class="form-control form-control-sm">
+													</div>
+
+		                      <div class="col-12 col-md-6 pl-4" ng-if="allProductsStatus == undefined" ng-repeat="product in allProducts | limitTo:numLimitProducts:startProducts | filter: search_products">
+
+														<div class="form-group">
+															<h6 class="form-control-label">{{product.name}}</h6>
+															<label class="custom-control custom-checkbox" ng-if="product.sub_products != null" ng-repeat="sub_product in product.sub_products" style="display: inline-flex; align-items: center; padding-left: 0; margin-right: .75rem;">
+									              <input type="checkbox" class="custom-control-input" value="sub_product.unique_id" ng-checked="selected_sub_products.indexOf(sub_product.unique_id) > -1" ng-click="toggleSelection(sub_product.unique_id)" style="position: static; margin-top: 0; margin-right: .3125rem; margin-left: 0;">
+									              <span class="custom-control-label">{{sub_product.name}} | {{sub_product.size}} | <span ng-if="sub_product.sales_price != 0"> <del>&#8358;{{sub_product.price | number}}</del> - &#8358;{{sub_product.sales_price | number}} </span> <span ng-if="sub_product.sales_price == 0">&#8358;{{sub_product.price | number}}</span></span>
+									            </label>
+															<p ng-if="product.sub_products == null"><span class="badge badge-pill badge-danger">No sub product</span></p>
+														</div>
+		                      </div>
+													<div class="col-12" ng-if="allProductsStatus == undefined">
+														<nav aria-label="" class="mt-3 text-center">
+															<ul class="pagination pagination-lg">
+																<li class="page-item"><a class="page-link" title="Previous Page" style="cursor: pointer;" ng-hide="hidePrevProducts()" ng-click="PrevPageProducts()"><i class="fas fa-angle-left"></i></a></li>
+																<li class="page-item active"><a class="page-link" title="Current Page">{{currentProductsPage}}</a></li>
+																<li class="page-item"><a class="page-link">...</a></li>
+																<li class="page-item"><a class="page-link" title="Total Number Of Pages">{{pagesProducts}}</a></li>
+																<li class="page-item"><a class="page-link" title="Next Page" style="cursor: pointer;" ng-hide="hideNextProducts()" ng-click="nextPageProducts()"><i class="fas fa-angle-right"></i></a></li>
+															</ul>
+														</nav>
+													</div>
+													<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="allProductsStatus != undefined">
+														<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button> -->
+														<div class="alert-icon">
+															<i class="far fa-fw fa-bell"></i>
+														</div>
+														<div class="alert-message">
+															<strong>Error</strong> {{allProductsStatus}}
+														</div>
+													</div>
+		                    </div>
+												<div class="row form-group">
+													<div class="col-12">
+														<span class="text-danger" ng-if="show_selected_product_error">Select at least one sub product</span>
+														<span class="text-danger" ng-if="addShippingFeeForm.$invalid && addShippingFeeForm.$submitted">Check form</span>
+													</div>
+												</div>
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="addShippingFeeForm.$valid && save_shipping_fee()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="editShippingFeeModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Edit {{the_sub_product_name}} - {{the_sub_product_size}} Shipping Fee</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+
+											<form name="editShippingFeeForm" novalidate>
+												<div class="row form-group">
+													<div class="col-12 col-md-4">
+														<label for="country" class=" form-control-label">Nationality</label>
+		                        <select name="country" ng-model="shipping_fee.edit_country" ng-required="true" class="form-control">
+															<optgroup id="country-optgroup-Africa" label="Africa">
+										            <option value="Algeria">Algeria</option>
+										            <option value="Angola">Angola</option>
+										            <option value="Benin">Benin</option>
+										            <option value="Botswana">Botswana</option>
+										            <option value="Burkina Faso">Burkina Faso</option>
+										            <option value="Burundi">Burundi</option>
+										            <option value="Cameroon">Cameroon</option>
+										            <option value="Cape Verde">Cape Verde</option>
+										            <option value="Central African Republic">Central African Republic</option>
+										            <option value="Chad">Chad</option>
+										            <option value="Comoros">Comoros</option>
+										            <option value="Congo - Brazzaville">Congo - Brazzaville</option>
+										            <option value="Congo - Kinshasa">Congo - Kinshasa</option>
+										            <option value="Côte d’Ivoire">Côte d’Ivoire</option>
+										            <option value="Djibouti">Djibouti</option>
+										            <option value="Egypt">Egypt</option>
+										            <option value="Equatorial Guinea">Equatorial Guinea</option>
+										            <option value="Eritrea">Eritrea</option>
+										            <option value="Ethiopia">Ethiopia</option>
+										            <option value="Gabon">Gabon</option>
+										            <option value="Gambia">Gambia</option>
+										            <option value="Ghana">Ghana</option>
+										            <option value="Guinea">Guinea</option>
+										            <option value="Guinea-Bissau">Guinea-Bissau</option>
+										            <option value="Kenya">Kenya</option>
+										            <option value="Lesotho">Lesotho</option>
+										            <option value="Liberia">Liberia</option>
+										            <option value="Libya">Libya</option>
+										            <option value="Madagascar">Madagascar</option>
+										            <option value="Malawi">Malawi</option>
+										            <option value="Mali">Mali</option>
+										            <option value="Mauritania">Mauritania</option>
+										            <option value="Mauritius">Mauritius</option>
+										            <option value="Mayotte">Mayotte</option>
+										            <option value="Morocco">Morocco</option>
+										            <option value="Mozambique">Mozambique</option>
+										            <option value="Namibia">Namibia</option>
+										            <option value="Niger">Niger</option>
+										            <option value="Nigeria" selected>Nigeria</option>
+										            <option value="Rwanda">Rwanda</option>
+										            <option value="Réunion">Réunion</option>
+										            <option value="Saint Helena">Saint Helena</option>
+										            <option value="Senegal">Senegal</option>
+										            <option value="Seychelles">Seychelles</option>
+										            <option value="Sierra Leone">Sierra Leone</option>
+										            <option value="Somalia">Somalia</option>
+										            <option value="South Africa">South Africa</option>
+										            <option value="Sudan">Sudan</option>
+										            <option value="Swaziland">Swaziland</option>
+										            <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
+										            <option value="Tanzania">Tanzania</option>
+										            <option value="Togo">Togo</option>
+										            <option value="Tunisia">Tunisia</option>
+										            <option value="Uganda">Uganda</option>
+										            <option value="Western Sahara">Western Sahara</option>
+										            <option value="Zambia">Zambia</option>
+										            <option value="Zimbabwe">Zimbabwe</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Americas" label="Americas">
+											            <option value="Anguilla">Anguilla</option>
+											            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+											            <option value="Argentina">Argentina</option>
+											            <option value="Aruba">Aruba</option>
+											            <option value="Bahamas">Bahamas</option>
+											            <option value="Barbados">Barbados</option>
+											            <option value="Belize">Belize</option>
+											            <option value="Bermuda">Bermuda</option>
+											            <option value="Bolivia">Bolivia</option>
+											            <option value="Brazil">Brazil</option>
+											            <option value="British Virgin Islands">British Virgin Islands</option>
+											            <option value="Canada">Canada</option>
+											            <option value="Cayman Islands">Cayman Islands</option>
+											            <option value="Chile">Chile</option>
+											            <option value="Colombia">Colombia</option>
+											            <option value="Costa Rica">Costa Rica</option>
+											            <option value="Cuba">Cuba</option>
+											            <option value="Dominica">Dominica</option>
+											            <option value="Dominican Republic">Dominican Republic</option>
+											            <option value="Ecuador">Ecuador</option>
+											            <option value="El Salvador">El Salvador</option>
+											            <option value="Falkland Islands">Falkland Islands</option>
+											            <option value="French Guiana">French Guiana</option>
+											            <option value="Greenland">Greenland</option>
+											            <option value="Grenada">Grenada</option>
+											            <option value="Guadeloupe">Guadeloupe</option>
+											            <option value="Guatemala">Guatemala</option>
+											            <option value="Guyana">Guyana</option>
+											            <option value="Haiti">Haiti</option>
+											            <option value="Honduras">Honduras</option>
+											            <option value="Jamaica">Jamaica</option>
+											            <option value="Martinique">Martinique</option>
+											            <option value="Mexico">Mexico</option>
+											            <option value="Montserrat">Montserrat</option>
+											            <option value="Netherlands Antilles">Netherlands Antilles</option>
+											            <option value="Nicaragua">Nicaragua</option>
+											            <option value="Panama">Panama</option>
+											            <option value="Paraguay">Paraguay</option>
+											            <option value="Peru">Peru</option>
+											            <option value="Puerto Rico">Puerto Rico</option>
+											            <option value="Saint Barthélemy">Saint Barthélemy</option>
+											            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+											            <option value="Saint Lucia">Saint Lucia</option>
+											            <option value="Saint Martin">Saint Martin</option>
+											            <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
+											            <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+											            <option value="Suriname">Suriname</option>
+											            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+											            <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+											            <option value="U.S. Virgin Islands">U.S. Virgin Islands</option>
+											            <option value="United States">United States</option>
+											            <option value="Uruguay">Uruguay</option>
+											            <option value="Venezuela">Venezuela</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Asia" label="Asia">
+											            <option value="Afghanistan">Afghanistan</option>
+											            <option value="Armenia">Armenia</option>
+											            <option value="Azerbaijan">Azerbaijan</option>
+											            <option value="Bahrain">Bahrain</option>
+											            <option value="Bangladesh">Bangladesh</option>
+											            <option value="Bhutan">Bhutan</option>
+											            <option value="Brunei">Brunei</option>
+											            <option value="Cambodia">Cambodia</option>
+											            <option value="China">China</option>
+											            <option value="Georgia">Georgia</option>
+											            <option value="Hong Kong SAR China">Hong Kong SAR China</option>
+											            <option value="India">India</option>
+											            <option value="Indonesia">Indonesia</option>
+											            <option value="Iran">Iran</option>
+											            <option value="Iraq">Iraq</option>
+											            <option value="Israel">Israel</option>
+											            <option value="Japan">Japan</option>
+											            <option value="Jordan">Jordan</option>
+											            <option value="Kazakhstan">Kazakhstan</option>
+											            <option value="Kuwait">Kuwait</option>
+											            <option value="Kyrgyzstan">Kyrgyzstan</option>
+											            <option value="Laos">Laos</option>
+											            <option value="Lebanon">Lebanon</option>
+											            <option value="Macau SAR China">Macau SAR China</option>
+											            <option value="Malaysia">Malaysia</option>
+											            <option value="Maldives">Maldives</option>
+											            <option value="Mongolia">Mongolia</option>
+											            <option value="Myanmar [Burma]">Myanmar [Burma]</option>
+											            <option value="Nepal">Nepal</option>
+											            <option value="Neutral Zone">Neutral Zone</option>
+											            <option value="North Korea">North Korea</option>
+											            <option value="Oman">Oman</option>
+											            <option value="Pakistan">Pakistan</option>
+											            <option value="Palestinian Territories">Palestinian Territories</option>
+											            <option value="People's Democratic Republic of Yemen">People's Democratic Republic of Yemen</option>
+											            <option value="Philippines">Philippines</option>
+											            <option value="Qatar">Qatar</option>
+											            <option value="Saudi Arabia">Saudi Arabia</option>
+											            <option value="Singapore">Singapore</option>
+											            <option value="South Korea">South Korea</option>
+											            <option value="Sri Lanka">Sri Lanka</option>
+											            <option value="Syria">Syria</option>
+											            <option value="Taiwan">Taiwan</option>
+											            <option value="Tajikistan">Tajikistan</option>
+											            <option value="Thailand">Thailand</option>
+											            <option value="Timor-Leste">Timor-Leste</option>
+											            <option value="Turkey">Turkey</option>
+											            <option value="Turkmenistan">Turkmenistan</option>
+											            <option value="United Arab Emirates">United Arab Emirates</option>
+											            <option value="Uzbekistan">Uzbekistan</option>
+											            <option value="Vietnam">Vietnam</option>
+											            <option value="Yemen">Yemen</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Europe" label="Europe">
+											            <option value="Albania">Albania</option>
+											            <option value="Andorra">Andorra</option>
+											            <option value="Austria">Austria</option>
+											            <option value="Belarus">Belarus</option>
+											            <option value="Belgium">Belgium</option>
+											            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+											            <option value="Bulgaria">Bulgaria</option>
+											            <option value="Croatia">Croatia</option>
+											            <option value="Cyprus">Cyprus</option>
+											            <option value="Czech Republic">Czech Republic</option>
+											            <option value="Denmark">Denmark</option>
+											            <option value="East Germany">East Germany</option>
+											            <option value="Estonia">Estonia</option>
+											            <option value="Faroe Islands">Faroe Islands</option>
+											            <option value="Finland">Finland</option>
+											            <option value="France">France</option>
+											            <option value="Germany">Germany</option>
+											            <option value="Gibraltar">Gibraltar</option>
+											            <option value="Greece">Greece</option>
+											            <option value="Guernsey">Guernsey</option>
+											            <option value="Hungary">Hungary</option>
+											            <option value="Iceland">Iceland</option>
+											            <option value="Ireland">Ireland</option>
+											            <option value="Isle of Man">Isle of Man</option>
+											            <option value="Italy">Italy</option>
+											            <option value="Jersey">Jersey</option>
+											            <option value="Latvia">Latvia</option>
+											            <option value="Liechtenstein">Liechtenstein</option>
+											            <option value="Lithuania">Lithuania</option>
+											            <option value="Luxembourg">Luxembourg</option>
+											            <option value="Macedonia">Macedonia</option>
+											            <option value="Malta">Malta</option>
+											            <option value="Metropolitan France">Metropolitan France</option>
+											            <option value="Moldova">Moldova</option>
+											            <option value="Monaco">Monaco</option>
+											            <option value="Montenegro">Montenegro</option>
+											            <option value="Netherlands">Netherlands</option>
+											            <option value="Norway">Norway</option>
+											            <option value="Poland">Poland</option>
+											            <option value="Portugal">Portugal</option>
+											            <option value="Romania">Romania</option>
+											            <option value="Russia">Russia</option>
+											            <option value="San Marino">San Marino</option>
+											            <option value="Serbia">Serbia</option>
+											            <option value="Serbia and Montenegro">Serbia and Montenegro</option>
+											            <option value="Slovakia">Slovakia</option>
+											            <option value="Slovenia">Slovenia</option>
+											            <option value="Spain">Spain</option>
+											            <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
+											            <option value="Sweden">Sweden</option>
+											            <option value="Switzerland">Switzerland</option>
+											            <option value="Ukraine">Ukraine</option>
+											            <option value="Union of Soviet Socialist Republics">Union of Soviet Socialist Republics</option>
+											            <option value="United Kingdom">United Kingdom</option>
+											            <option value="Vatican City">Vatican City</option>
+											            <option value="Åland Islands">Åland Islands</option>
+											        </optgroup>
+											        <optgroup id="country-optgroup-Oceania" label="Oceania">
+											            <option value="American Samoa">American Samoa</option>
+											            <option value="Antarctica">Antarctica</option>
+											            <option value="Australia">Australia</option>
+											            <option value="Bouvet Island">Bouvet Island</option>
+											            <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+											            <option value="Christmas Island">Christmas Island</option>
+											            <option value="Cocos [Keeling] Islands">Cocos [Keeling] Islands</option>
+											            <option value="Cook Islands">Cook Islands</option>
+											            <option value="Fiji">Fiji</option>
+											            <option value="French Polynesia">French Polynesia</option>
+											            <option value="French Southern Territories">French Southern Territories</option>
+											            <option value="Guam">Guam</option>
+											            <option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option>
+											            <option value="Kiribati">Kiribati</option>
+											            <option value="Marshall Islands">Marshall Islands</option>
+											            <option value="Micronesia">Micronesia</option>
+											            <option value="Nauru">Nauru</option>
+											            <option value="New Caledonia">New Caledonia</option>
+											            <option value="New Zealand">New Zealand</option>
+											            <option value="Niue">Niue</option>
+											            <option value="Norfolk Island">Norfolk Island</option>
+											            <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+											            <option value="Palau">Palau</option>
+											            <option value="Papua New Guinea">Papua New Guinea</option>
+											            <option value="Pitcairn Islands">Pitcairn Islands</option>
+											            <option value="Samoa">Samoa</option>
+											            <option value="Solomon Islands">Solomon Islands</option>
+											            <option value="South Georgia and the South Sandwich Islands">South Georgia and the South Sandwich Islands</option>
+											            <option value="Tokelau">Tokelau</option>
+											            <option value="Tonga">Tonga</option>
+											            <option value="Tuvalu">Tuvalu</option>
+											            <option value="U.S. Minor Outlying Islands">U.S. Minor Outlying Islands</option>
+											            <option value="Vanuatu">Vanuatu</option>
+											            <option value="Wallis and Futuna">Wallis and Futuna</option>
+											        </optgroup>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.country.$error.required && editShippingFeeForm.$submitted">Select Country</span>
+		                      </div>
+													<div class="col-12 col-md-4">
+														<label for="" class=" form-control-label">State</label>
+		                        <input ng-if="shipping_fee.edit_country != 'Nigeria'" type="text" ng-model="shipping_fee.edit_state" name="state" ng-required="true" ng-minlength="3" ng-maxlength="50" placeholder="What's the state ?" class="form-control">
+														<select ng-if="shipping_fee.edit_country == 'Nigeria'" ng-change="change_lga(shipping_fee.edit_state)" name="state" ng-model="shipping_fee.edit_state" ng-required="true" class="form-control">
+															<option value="" disabled selected>--Select State--</option>
+						                  <option value="Abia">Abia</option>
+						                  <option value="Adamawa">Adamawa</option>
+						                  <option value="Akwa Ibom">Akwa Ibom</option>
+						                  <option value="Anambra">Anambra</option>
+						                  <option value="Bauchi">Bauchi</option>
+						                  <option value="Bayelsa">Bayelsa</option>
+						                  <option value="Benue">Benue</option>
+						                  <option value="Borno">Borno</option>
+						                  <option value="Cross River">Cross River</option>
+						                  <option value="Delta">Delta</option>
+						                  <option value="Ebonyi">Ebonyi</option>
+						                  <option value="Edo">Edo</option>
+						                  <option value="Ekiti">Ekiti</option>
+						                  <option value="Enugu">Enugu</option>
+						                  <option value="Abuja">Federal Capital Territory</option>
+						                  <option value="Gombe">Gombe</option>
+						                  <option value="Imo">Imo</option>
+						                  <option value="Jigawa">Jigawa</option>
+						                  <option value="Kaduna">Kaduna</option>
+						                  <option value="Kano">Kano</option>
+						                  <option value="Katsina">Katsina</option>
+						                  <option value="Kebbi">Kebbi</option>
+						                  <option value="Kogi">Kogi</option>
+						                  <option value="Kwara">Kwara</option>
+						                  <option value="Lagos">Lagos</option>
+						                  <option value="Nasarawa">Nasarawa</option>
+						                  <option value="Niger">Niger</option>
+						                  <option value="Ogun">Ogun</option>
+						                  <option value="Ondo">Ondo</option>
+						                  <option value="Osun">Osun</option>
+						                  <option value="Oyo">Oyo</option>
+						                  <option value="Plateau">Plateau</option>
+						                  <option value="Rivers">Rivers</option>
+						                  <option value="Sokoto">Sokoto</option>
+						                  <option value="Taraba">Taraba</option>
+						                  <option value="Yobe">Yobe</option>
+						                  <option value="Zamfara">Zamfara</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.state.$error.required && editShippingFeeForm.$submitted && shipping_fee.country != 'Nigeria'">Enter State</span>
+														<span class="text-danger mt-3" ng-if="editShippingFeeForm.state.$error.required && editShippingFeeForm.$submitted && shipping_fee.country == 'Nigeria'">Select State</span>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.state.$error.minlength && editShippingFeeForm.$submitted">Add more characters min length is 3</span>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.state.$error.maxlength && editShippingFeeForm.$submitted">Reduce characters max length is 50</span>
+		                      </div>
+													<div class="col-12 col-md-4">
+														<label for="post_title" class=" form-control-label">City / Municipality</label>
+		                        <input ng-if="shipping_fee.edit_country != 'Nigeria'" type="text" ng-model="shipping_fee.edit_city" name="city" ng-required="true" ng-minlength="3" ng-maxlength="50" placeholder="What's the city / municipality ?" class="form-control">
+														<select ng-if="shipping_fee.edit_country == 'Nigeria'" name="city" ng-model="shipping_fee.edit_city" ng-required="true" class="form-control">
+															<option value="" disabled selected>--Select City / Municipality--</option>
+						                  <option ng-repeat="lga in lgas" value="{{lga}}">{{lga}}</option>
+		                        </select>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.city.$error.required && editShippingFeeForm.$submitted && shipping_fee.country != 'Nigeria'">Enter City / Municipality</span>
+														<span class="text-danger mt-3" ng-if="editShippingFeeForm.city.$error.required && editShippingFeeForm.$submitted && shipping_fee.country == 'Nigeria'">Select City / Municipality</span>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.city.$error.minlength && editShippingFeeForm.$submitted">Add more characters min length is 3</span>
+		                        <span class="text-danger mt-3" ng-if="editShippingFeeForm.city.$error.maxlength && editShippingFeeForm.$submitted">Reduce characters max length is 50</span>
+		                      </div>
+		                    </div>
+												<div class="row form-group">
+													<div class="col-12">
+														<label for="" class=" form-control-label">Price</label>
+										        <input class="form-control" type="number" ng-model="shipping_fee.edit_price" name="edit_price" ng-required="true" ng-minlength="1" ng-maxlength="11" ng-pattern="/^\d+$/" class="form-control input-lg">
+										        <span class="text-danger" ng-if="editShippingFeeForm.edit_price.$error.required && editShippingFeeForm.$submitted">Enter Price</span>
+										        <span class="text-danger" ng-if="editShippingFeeForm.edit_price.$error.pattern && editShippingFeeForm.$submitted">Numbers Only </span>
+														<span class="text-danger" ng-if="editShippingFeeForm.edit_price.$error.minlength && editShippingFeeForm.$submitted">Add more characters min length is 1</span>
+														<span class="text-danger" ng-if="editShippingFeeForm.edit_price.$error.maxlength && editShippingFeeForm.$submitted">Reduce characters max length is 11</span>
+													</div>
+												</div>
+
+                        <div class="row form-group" ng-if="shouldIShow == false || shouldIShow == undefined">
+                          <div class="col-6">
+                            <button type="sumbit" ng-click="editShippingFeeForm.$valid && go_ahead()" class="btn btn-success">
+                              Save <i class="fa fa-check"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row form-group" ng-if="shouldIShow">
+                          <form name="complete_action_form" novalidate>
+                            <label class="form-control-label col-12">Are you sure you want to complete this action ?</label>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success btn-block">
+                                Yes <i class="fa fa-check"></i>
+                              </button>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                              <button type="button" ng-click="removeConfirmModal()" class="btn btn-danger btn-block close-modal">
+                                No <i class="fa fa-times"></i>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+												<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Error</strong> {{actionStatus}}
+													</div>
+												</div>
+												<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+													<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button> -->
+													<div class="alert-icon">
+														<i class="far fa-fw fa-bell"></i>
+													</div>
+													<div class="alert-message">
+														<strong>Success</strong> {{actionStatus}}
+													</div>
+												</div>
+                      </form>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Delete Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-danger">Delete</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Restore Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body m-3">
+											<p class="mb-0">Are you sure you want to complete this action ?</p>
+											<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Error</strong> {{actionStatus}}
+												</div>
+											</div>
+											<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+												<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button> -->
+												<div class="alert-icon">
+													<i class="far fa-fw fa-bell"></i>
+												</div>
+												<div class="alert-message">
+													<strong>Success</strong> {{actionStatus}}
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="button" ng-click="continue_action()" class="btn btn-success">Restore</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item active">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="dashboard">Overview</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row" ng-if="show_loader == undefined">
+						<div class="col-xl-12 col-xxl-12 d-flex">
+							<div class="w-100">
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Posts</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 7">{{totalPostsCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 7"><del>Confidential</del></h1>
+												<div class="mb-1">
+													<span class="text-primary" ng-if="main_role != 7"> <i class="mdi mdi-arrow-bottom-right"></i> {{totalPostViewsCount | downloads}} </span>
+													<span class="text-muted">views</span>
+												</div>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Blog Images</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 7">{{totalBlogImagesCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 7"><del>Confidential</del></h1>
+												<div class="mb-1">
+													<span class="text-primary" ng-if="main_role != 7"> <i class="mdi mdi-arrow-bottom-right"></i> {{totalBlogImagesFileSizeCount | bytes}} </span>
+													<span class="text-muted">storage used</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="card">
+													<div class="card-body">
+														<h5 class="card-title mb-4">Users</h5>
+														<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">{{totalUsersCount | number}}</h1>
+														<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+														<div class="mb-1">
+															<span class="text-primary"> <i class="mdi mdi-arrow-bottom-right"></i> Office </span>
+															<span class="text-muted">users</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="card">
+													<div class="card-body">
+														<h5 class="card-title mb-4">Checkers</h5>
+														<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">{{totalCheckersCount | number}}</h1>
+														<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+														<div class="mb-1">
+															<span class="text-primary"> <i class="mdi mdi-arrow-bottom-right"></i> Event </span>
+															<span class="text-muted">checkers</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">File Manager</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 6 && main_role != 7">{{totalFilesCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+												<div class="mb-1">
+													<span class="text-primary" ng-if="main_role != 6 && main_role != 7"> <i class="mdi mdi-arrow-bottom-right"></i> {{totalFilesSizeCount | bytes}} </span>
+													<span class="text-muted">storage used</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Shop</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 6 && main_role != 7">{{totalShopCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+												<div class="mb-1">
+													<span class="text-primary" ng-if="main_role != 6 && main_role != 7"> <i class="mdi mdi-arrow-bottom-right"></i> {{totalShopViewsCount | downloads}} </span>
+													<span class="text-muted">views</span>
+												</div>
+											</div>
+										</div>
+
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Gallery</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 6 && main_role != 7">{{totalGalleryCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+												<div class="mb-1">
+													<span class="text-primary" ng-if="main_role != 6 && main_role != 7"> <i class="mdi mdi-arrow-bottom-right"></i> {{totalGalleryFileSizeCount | bytes}} </span>
+													<span class="text-muted">storage used</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" ng-if="show_loader == undefined">
+						<div class="col-xl-12 col-xxl-12 d-flex">
+							<div class="w-100">
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Categories</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 7">{{totalCategoryCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 7"><del>Confidential</del></h1>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Enquiries</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">{{totalEnquiriesCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Income</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">&#8358; {{totalIncomeCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+												<!-- <div class="mb-1">
+													<span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
+													<span class="text-muted">Since last week</span>
+												</div> -->
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Expenses</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">&#8358; {{totalExpenseCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+												<!-- <div class="mb-1">
+													<span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
+													<span class="text-muted">Since last week</span>
+												</div> -->
+											</div>
+										</div>
+									</div>
+
+									<div class="col-sm-3">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Events</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6">{{totalEventCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6"><del>Confidential</del></h1>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Newsletter</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">{{totalNewsletterCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" ng-if="show_loader == undefined">
+						<div class="col-xl-12 col-xxl-12 d-flex">
+							<div class="w-100">
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Clients</h5>
+												<h1 class="display-5 mt-1 mb-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">{{totalClientsCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Balance</h5>
+												<h1 class="display-5 mt-1 mb-3 text-success" ng-if="(main_role != 5 && main_role != 6 && main_role != 7) && balanceCount > 0">&#8358; {{balanceCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-primary" ng-if="(main_role != 5 && main_role != 6 && main_role != 7) && balanceCount == 0">&#8358; {{balanceCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="(main_role != 5 && main_role != 6 && main_role != 7) && balanceCount < 0">&#8358; {{balanceCount | number}}</h1>
+												<h1 class="display-5 mt-1 mb-3 text-danger" ng-if="main_role == 5 || main_role == 6 || main_role == 7"><del>Confidential</del></h1>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Comments</h5>
+												<h1 class="display-5 mt-1 mb-3">{{totalCommentsCount | number}}</h1>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<input type="hidden" id="income_count" name="" value="{{totalIncomeCount}}">
+					<input type="hidden" id="expense_count" name="" value="{{totalExpenseCount}}">
+					<input type="hidden" id="balance_count" name="" value="{{balanceCount}}">
+					<input type="hidden" id="post_views_count" name="" value="{{totalPostViewsCount}}">
+					<input type="hidden" id="shop_views_count" name="" value="{{totalShopViewsCount}}">
+					<input type="hidden" id="gallery_file_size_count" name="" value="{{totalGalleryFileSizeCount}}">
+					<input type="hidden" id="blog_images_file_size_count" name="" value="{{totalBlogImagesFileSizeCount}}">
+					<input type="hidden" id="files_size_count" name="" value="{{totalFilesSizeCount}}">
+
+					<div class="row" ng-if="(main_role != 5 && main_role != 6 && main_role != 7) && show_loader == undefined">
+						<div class="col-xl-6 col-xxl-6">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Views charts</h5>
+								</div>
+								<div class="card-body py-3">
+									<div class="chart chart-sm">
+										<canvas id="chartjs-dashboard-pie-3"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-6 col-xxl-6">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">File storage chart</h5>
+								</div>
+								<div class="card-body py-3">
+									<div class="chart chart-sm">
+										<canvas id="chartjs-dashboard-pie-2"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" ng-if="show_loader == undefined">
+						<div class="col-12 col-md-6 col-xxl-6 d-flex order-2 order-xxl-3" ng-if="main_role != 5 && main_role != 6 && main_role != 7">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Income and Expenses</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="py-3">
+											<div class="chart chart-xs">
+												<canvas id="chartjs-dashboard-pie"></canvas>
+											</div>
+										</div>
+
+										<table class="table mb-0">
+											<tbody>
+												<tr>
+													<td>Income</td>
+													<td class="text-right">&#8358; {{totalIncomeCount | number}}</td>
+												</tr>
+												<tr>
+													<td>Expenses</td>
+													<td class="text-right">&#8358; {{totalExpenseCount | number}}</td>
+												</tr>
+												<tr>
+													<td>Balance</td>
+													<td class="text-right text-success" ng-if="balanceCount > 0">&#8358; {{balanceCount | number}}</td>
+													<td class="text-right text-primary" ng-if="balanceCount == 0">&#8358; {{balanceCount | number}}</td>
+													<td class="text-right text-danger" ng-if="balanceCount < 0">&#8358; {{balanceCount | number}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12 col-md-12 col-xxl-12 d-flex order-1 order-xxl-1" ng-if="main_role == 5 || main_role == 6 || main_role == 7">
+							<div class="card flex-fill">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Calendar</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="chart">
+											<div id="datetimepicker-dashboard"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12 col-md-6 col-xxl-6 d-flex order-1 order-xxl-1" ng-if="main_role != 5 && main_role != 6 && main_role != 7">
+							<div class="card flex-fill">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0">Calendar</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="chart">
+											<div id="datetimepicker-dashboard"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+	<script>
+		$(function() {
+			setTimeout(function () {
+
+				var post_views_count = document.getElementById('post_views_count').value;
+				var shop_views_count = document.getElementById('shop_views_count').value;
+
+				var get_downloads_filter = function (downloads) {
+					if (isNaN(downloads))
+						downloads = 0;
+
+					if (downloads < 1000)
+						return downloads + ' ';
+
+					downloads /= 1000;
+
+					if (downloads < 1000)
+						return downloads.toFixed(1) + ' k';
+
+					downloads /= 1000;
+
+					if (downloads < 1000)
+						return downloads.toFixed(1) + ' m';
+
+					downloads /= 1000;
+
+					if (downloads < 1000)
+						return downloads.toFixed(1) + ' b';
+
+					downloads /= 1000;
+
+					return downloads.toFixed(1) + ' tn';
+				};
+
+				var post_views_label = "Posts: " + get_downloads_filter(post_views_count) + " views";
+				var shop_views_label = "Shop: " + get_downloads_filter(shop_views_count) + " views";
+
+				// Pie chart
+				new Chart(document.getElementById("chartjs-dashboard-pie-3"), {
+					type: 'pie',
+					data: {
+						labels: [post_views_label, shop_views_label],
+						datasets: [{
+							data: [post_views_count, shop_views_count],
+							backgroundColor: [
+								window.theme.info,
+								window.theme.primary
+							],
+							borderWidth: 5
+						}]
+					},
+					options: {
+						responsive: !window.MSInputMethodContext,
+						maintainAspectRatio: false,
+						legend: {
+							display: true,
+							position: "bottom"
+						},
+						cutoutPercentage: 75,
+						tooltips: {
+							enabled: false
+						}
+					}
+				});
+			}, 2000)
+		});
+	</script>
+	<script>
+		$(function() {
+			setTimeout(function () {
+				var gallery_file_size_count = document.getElementById('gallery_file_size_count').value;
+				var blog_images_file_size_count = document.getElementById('blog_images_file_size_count').value;
+				var files_size_count = document.getElementById('files_size_count').value;
+
+				var get_byte_filter = function (bytes, precision) {
+					if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-' ;
+					if (typeof precision === 'undefined') precision = 1 ;
+					var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
+						number = Math.floor(Math.log(bytes) / Math.log(1024));
+						return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + " " + units[number];
+				};
+
+				var gallery_label = "Gallery: " + get_byte_filter(gallery_file_size_count);
+				var blog_images_label = "Blog Images: " + get_byte_filter(blog_images_file_size_count);
+				var file_manager_label = "File Manager: " + get_byte_filter(files_size_count);
+
+				// Pie chart
+				new Chart(document.getElementById("chartjs-dashboard-pie-2"), {
+					type: 'pie',
+					data: {
+						labels: [gallery_label, blog_images_label, file_manager_label],
+						datasets: [{
+							data: [gallery_file_size_count, blog_images_file_size_count, files_size_count],
+							backgroundColor: [
+								window.theme.success,
+								window.theme.info,
+								window.theme.primary
+							],
+							borderWidth: 5
+						}]
+					},
+					options: {
+						responsive: !window.MSInputMethodContext,
+						maintainAspectRatio: false,
+						legend: {
+							display: true,
+							position: "bottom"
+						},
+						cutoutPercentage: 75,
+						tooltips: {
+							enabled: false
+						}
+					}
+				});
+			}, 2000)
+		});
+	</script>
+	<script>
+		$(function() {
+			setTimeout(function () {
+				var income_count = document.getElementById('income_count').value;
+				var expense_count = document.getElementById('expense_count').value;
+				var balance_count = document.getElementById('balance_count').value;
+				// Pie chart
+				new Chart(document.getElementById("chartjs-dashboard-pie"), {
+					type: 'pie',
+					data: {
+						labels: ["Income", "Expenses", "Balance"],
+						datasets: [{
+							data: [income_count, expense_count, balance_count],
+							backgroundColor: [
+								window.theme.success,
+								window.theme.danger,
+								window.theme.primary
+							],
+							borderWidth: 5
+						}]
+					},
+					options: {
+						responsive: !window.MSInputMethodContext,
+						maintainAspectRatio: false,
+						legend: {
+							display: true,
+							position: "bottom"
+						},
+						cutoutPercentage: 75,
+						tooltips: {
+							enabled: false
+						}
+					}
+				});
+			}, 2000)
+		});
+	</script>
+	<script>
+		$(function() {
+			setTimeout(function () {
+				$('#datetimepicker-dashboard').datetimepicker({
+					inline: true,
+					sideBySide: false,
+					format: 'L'
+				});
+			}, 2000)
+		});
+	</script>
+
+</body>
+
+</html>

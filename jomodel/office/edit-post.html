@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="description" content="Xnyder Description"> -->
+	<!-- <meta name="keywords" content="Xnyder Keywords"> -->
+	<!-- <meta name="author" content="Xnyder Author"> -->
+
+	<link rel="shortcut icon" href="img/icons/logo.svg" />
+
+	<title>Reestoc | Management</title>
+
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" ng-href="dashboard">
+          <span class="align-middle">{{pageTitle}}</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Overview
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="dashboard">
+              <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Management
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="add-navigation">
+              <i class="align-middle" data-feather="plus-circle"></i> <span class="align-middle">New Navigation</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="all-navigations">
+              <i class="align-middle" data-feather="menu"></i> <span class="align-middle">All Navigations</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Navigation Links
+					</li>
+
+					<li class="sidebar-item {{navigation.nav_link == current_nav_split ? 'active' : ''}}" ng-if="allNavigations != 'No navigation'" ng-repeat="navigation in allNavigations">
+						<a class="sidebar-link" ng-href="{{navigation.nav_link}}">
+              <i class="align-middle" data-feather="{{navigation.nav_icon}}"></i> <span class="align-middle">{{navigation.nav_title}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item" ng-if="allNavigations == 'No navigation'">
+						<a class="sidebar-link">
+              <i class="align-middle" data-feather="x"></i> <span class="align-middle">{{allNavigations}}</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Accessories
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="enquiries">
+              <i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">Enquiries</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="file-manager">
+              <i class="align-middle" data-feather="folder"></i> <span class="align-middle">File Manager</span>
+            </a>
+					</li>
+
+					<li class="sidebar-header">
+						Personalization
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="profile">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="notifications">
+              <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notifications</span>
+            </a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" ng-href="settings">
+              <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+            </a>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-cta">
+					<div class="sidebar-cta-content">
+						<strong class="d-inline-block mb-2">Powered by Xnyder</strong>
+						<div class="mb-3 text-sm">
+
+						</div>
+						<a href="https://xnyder.co" target="_blank" class="btn btn-primary btn-block">Visit us</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle d-flex">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">{{allNotificationsCount | notifications}}</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									Notifications
+								</div>
+								<div class="list-group">
+									<a href="" ng-if="allNotifications != 'no data'" ng-repeat="notification in allNotifications" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i ng-if="notification.type == 'Login Activity'" class="text-primary" data-feather="log-in"></i>
+												<i ng-if="notification.type == 'Logout Activity'" class="text-danger" data-feather="log-out"></i>
+												<i ng-if="notification.type == 'Add Activity'" class="text-success" data-feather="check-circle"></i>
+												<i ng-if="notification.type == 'Delete Activity'" class="text-danger" data-feather="trash-2"></i>
+												<i ng-if="notification.type == 'Edit Activity'" class="text-primary" data-feather="edit-3"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark" ng-if="notification.type == 'Login Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="notification.type == 'Logout Activity'">{{notification.type}}</div>
+												<div class="text-dark" ng-if="(notification.type != 'Login Activity') && (notification.type != 'Logout Activity')">Action Performed</div>
+												<div class="text-muted small mt-1">{{notification.action}}</div>
+												<div class="text-muted small mt-1">{{notification.added_date | fil_date | date}} @ {{notification.added_date | fil_time | fil_fmt_time}}</div>
+											</div>
+										</div>
+									</a>
+									<a href="" ng-if="allNotifications == 'no data'" class="list-group-item">
+										<div class="row no-gutters align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="bell-off"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">No notifications</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a ng-href="notifications" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                <img ng-src="{{loggedInUserImage}}" class="avatar img-fluid rounded mr-1" alt="{{loggedInName}}" /> <span class="text-dark">{{loggedInName}}</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" ng-href="profile"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-href="settings"><i class="align-middle mr-1" data-feather="settings"></i> Settings</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" ng-click="doLogout()">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row mb-2 mb-xl-3">
+						<div class="col-auto d-none d-sm-block">
+							<h1 class="h3 mb-3">{{pageTitle}}</h1>
+						</div>
+
+						<div class="col-auto ml-auto text-right mt-n1">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+									<li class="breadcrumb-item"><a ng-href="all-posts">All Posts</a></li>
+									<li class="breadcrumb-item active" aria-current="page">{{pageTitle}}</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card" ng-if="show_loader">
+								<div class="card-header">
+									<h5 class="card-title mb-0"></h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-2 text-center">
+										<div class="spinner-grow spinner-grow-lg text-danger mr-2 " role="status">
+											<span class="sr-only">Loading red...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-warning mr-2 " role="status">
+											<span class="sr-only">Loading yellow...</span>
+										</div>
+										<div class="spinner-grow spinner-grow-lg text-success mr-2 " role="status">
+											<span class="sr-only">Loading green...</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role == 1 || main_role == 2 || main_role == 3 || main_role == 4 || main_role == 16)">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Edit post</h5>
+								</div>
+								<div class="card-body">
+									<form name="editPostForm" novalidate>
+                    <div class="row form-group">
+                      <div class="col-12 col-md-12">
+                        <label for="post_title" class=" form-control-label">Post Title</label>
+                      </div>
+                      <div class="col-12 col-md-12">
+                        <input type="text" ng-model="post.post_title" name="post_title" ng-required="true" ng-minlength="3" ng-maxlength="149" placeholder="What's the title of the post ?" class="form-control">
+                        <span class="text-danger mt-3" ng-if="editPostForm.post_title.$error.required && editPostForm.$submitted">Enter Post Title</span>
+                        <span class="text-danger mt-3" ng-if="editPostForm.post_title.$error.minlength && editPostForm.$submitted">Add more characters min length is 3</span>
+                        <span class="text-danger mt-3" ng-if="editPostForm.post_title.$error.maxlength && editPostForm.$submitted">Reduce characters max length is 149</span>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-12 col-md-12">
+                        <label for="category_unique_id" class=" form-control-label">Post Category</label>
+                      </div>
+                      <div class="col-12 col-md-12">
+                        <select id="select" name="category_unique_id" ng-model="post.category_unique_id" ng-required="true" class="form-control">
+                          <option ng-repeat="category in allCategories" value="{{category.unique_id}}">{{category.category}}</option>
+                        </select>
+                        <span class="text-danger mt-3" ng-if="editPostForm.category_unique_id.$error.required && editPostForm.$submitted">Select Post Category</span>
+                        <span class="text-danger mt-3" ng-if="allCategoriesStatus">{{allCategoriesStatus}}</span>
+                      </div>
+                    </div>
+                    <!-- <div class="row form-group">
+                      <div class="col-12 col-md-12">
+                        <label for="author" class=" form-control-label">Post Author</label>
+                      </div>
+                      <div class="col-12 col-md-12">
+                        <input type="text" ng-model="post.author" name="author" ng-required="true" ng-minlength="3" ng-maxlength="49" placeholder="Who's posting ?" class="form-control">
+                        <span class="text-danger mt-3" ng-if="editPostForm.author.$error.required && editPostForm.$submitted">Enter Post Author</span>
+                        <span class="text-danger mt-3" ng-if="editPostForm.author.$error.minlength && editPostForm.$submitted">Add more characters min length is 3</span>
+                        <span class="text-danger mt-3" ng-if="editPostForm.author.$error.maxlength && editPostForm.$submitted">Reduce characters max length is 49</span>
+                      </div>
+                    </div> -->
+                    <div class="row form-group">
+											<div class="col-12 col-sm-12">
+                        <label for="" class=" form-control-label">Recent Background Image :</label>
+                        <br>
+                        <!-- <img ng-src="{{post.old_bgimage}}" style="width: 100%; height: auto;"> -->
+												<img ng-src="../../images/blog_images/background_images/{{post.file}}" style="width: 100%; height: auto;">
+                        <br><br>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <label for="" class=" form-control-label">Upload Background Image</label><span class="text-primary ml-2">*Please wait after upload for compression to complete</span><br>
+                        <input class="mb-3" ng-model="form.image" type="file"  accept="image/*" onchange="angular.element(this).scope().uploadedFile(this)">
+                        <br>
+                        <img ng-src="{{image_source}}" style="width: 100%; height: auto;">
+
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-12 col-md-12">
+                        <label for="" class=" form-control-label">Post Details</label>
+                        <summernote id="summernote" config="options" ng-model="post.post_details" ng-required="true" ng-minlength="10" ng-maxlength="4294967200" name="post_details"></summernote>
+                        <span class="text-danger mt-3" ng-if="editPostForm.post_details.$error.required && editPostForm.$submitted">Enter Post Details</span>
+                        <span class="text-danger mt-3" ng-if="editPostForm.post_details.$error.minlength && editPostForm.$submitted">Add characters min length is 10</span>
+                        <span class="text-danger mt-3" ng-if="editPostForm.post_details.$error.maxlength && editPostForm.$submitted">Reduce characters max length reached</span>
+                      </div>
+                    </div>
+
+                    <button type="submit" ng-if="shouldIShow == false || shouldIShow == undefined && drafted == 0" ng-click="editPostForm.$valid && edit_post()" class="btn btn-success m-t-30">
+											<i class="fa fa-upload"></i>
+                      Publish Post
+                    </button>
+
+										<button type="submit" ng-if="shouldIShow == false || shouldIShow == undefined && drafted == 1" ng-click="editPostForm.$valid && edit_draft_post()" class="btn btn-primary m-t-30">
+											<i class="fa fa-cloud"></i>
+                      Save Draft
+                    </button>
+
+										<div class="row form-group m-t-20">
+                      <div class="col-12 col-sm-12">
+                        <h4 class="text-danger mt-3" ng-if="editPostForm.$invalid && editPostForm.$submitted">Check Your Form</h4>
+                      </div>
+                    </div>
+
+										<p class="mb-0 text-center mt-3" ng-if="shouldIShow">Are you sure you want to complete this action ?</p>
+										<p class="mb-0 text-center mt-3" ng-if="shouldIShow">
+											<button type="button" ng-click="continue_action()" ng-disabled="clickOnce" class="btn btn-success">
+												Yes
+											</button>
+											<button type="button" ng-disabled="clickOnce" ng-click="removeConfirmModal()" class="btn btn-danger close-modal">
+												No
+											</button>
+										</p>
+
+										<div class="rounded progress-bar input-lg progress-bar-striped progress-bar-animated mt-3" ng-show="showProgress && progressCounter != '100.00%'" role="progressbar" aria-valuenow="{{progressBar}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressCounter}};">
+	        			      {{progressCounter}}
+	        			    </div>
+	                  <div class="rounded progress-bar input-lg progress-bar-striped progress-bar-animated mt-3" ng-show="progressCounter == '100.00%' && successFileUpload != true" role="progressbar" aria-valuenow="{{progressBar}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressCounter}};">
+	        			      Compressing, please wait ...
+	        			    </div>
+	                  <div class="rounded progress-bar input-lg progress-bar-success progress-bar-animated mt-3" ng-show="successFileUpload" role="progressbar" aria-valuenow="{{progressBar}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressCounter}};">
+	        			      Completed
+	        			    </div>
+										<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="errorFileUpload">
+											<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> -->
+											<div class="alert-icon">
+												<i class="far fa-fw fa-bell"></i>
+											</div>
+											<div class="alert-message">
+												<strong>Error</strong> {{fileUploadStatusError}}
+											</div>
+										</div>
+										<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="successFileUpload">
+											<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> -->
+											<div class="alert-icon">
+												<i class="far fa-fw fa-bell"></i>
+											</div>
+											<div class="alert-message">
+												<strong>Success</strong> {{fileUploadStatusSuccess}}
+											</div>
+										</div>
+										<div class="alert alert-danger alert-dismissible mt-3" role="alert" ng-if="showStatus">
+											<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> -->
+											<div class="alert-icon">
+												<i class="far fa-fw fa-bell"></i>
+											</div>
+											<div class="alert-message">
+												<strong>Error</strong> {{actionStatus}}
+											</div>
+										</div>
+										<div class="alert alert-success alert-dismissible mt-3" role="alert" ng-if="showSuccessStatus">
+											<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> -->
+											<div class="alert-icon">
+												<i class="far fa-fw fa-bell"></i>
+											</div>
+											<div class="alert-message">
+												<strong>Success</strong> {{actionStatus}}
+											</div>
+										</div>
+
+                  </form>
+								</div>
+							</div>
+
+							<div class="card" ng-if="show_loader == undefined && (main_role != 1 && main_role != 2 && main_role != 3 && main_role != 4 && main_role != 16)">
+								<div class="card-header bg-danger">
+									<h5 class="card-title mb-0 text-light">Unauthorized access</h5>
+								</div>
+								<div class="card-body bg-danger">
+									<blockquote class="blockquote mb-0">
+	                  <p class="text-light">You do not have access to this data</p>
+                    <footer class="blockquote-footer text-light">Error
+                      <cite title="Error">Occured</cite>
+                    </footer>
+                  </blockquote>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="" class="text-muted"><strong>Reestoc</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://xnyder.co">Support</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>
