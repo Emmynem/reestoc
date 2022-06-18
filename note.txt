@@ -1,0 +1,1300 @@
+*** Instruction ***
+
+When you see this opening and closing below - This means everything inside it is
+what a page needs to function properly, just copy the lines of code in it and
+paste in that page's controller.
+
+// ---------------------------------- A Page ---------------------------------
+  Lines of code in here ...
+//_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+When you see this opening and closing below - This means anything inside it is
+a function to be called when a user want's to send data to the DB on that page.
+
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/ Sending data to DB /\/\/\/\/\/\/\/\/\/\/\\/\/
+  Lines of code in here ...
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Short version = With one image / Just one array / Just an object
+Long version = Multiple images / Sub arrays / Sub arrays (sub arrays)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+if (!in_array($unique_id,$not_allowed_values) && !in_array($user_unique_id,$not_allowed_values) && !in_array($product_unique_id,$not_allowed_values) && !in_array($quantity,$not_allowed_values)) {
+  try {
+    $conn->beginTransaction();
+
+    $date_added = $functions->today;
+    $active = $functions->active;
+    $null = $functions->null;
+
+
+
+    $conn->commit();
+  } catch (PDOException $e) {
+    $conn->rollback();
+    throw $e;
+    $output['error'] = true;
+    $output['message'] = "Critical error occured";
+    return $output;
+  }
+}
+else {
+  $output['error'] = true;
+  $output['message'] = "All fields are required";
+  return $output;
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+$returnvalue = new genericClass();
+$returnvalue->engineError = 2;
+$returnvalue->engineErrorMessage = "User already exists";
+
+$returnvalue = new genericClass();
+$returnvalue->engineMessage = 1;
+
+$returnvalue = new genericClass();
+$returnvalue->engineError = 2;
+$returnvalue->errorEngineMessage = "Not inserted (new management user)";
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+$sqlSearchUser = "SELECT unique_id FROM management WHERE unique_id=:unique_id AND status=:status";
+$querySearchUser = $conn->prepare($sqlSearchUser);
+$querySearchUser->bindParam(":unique_id", $edit_user_unique_id);
+$querySearchUser->bindParam(":status", $active);
+$querySearchUser->execute();
+
+if ($querySearchUser->rowCount() > 0) {
+
+  if ($validation["error"] == true) {
+    $returnvalue = new genericClass();
+    $returnvalue->engineError = 2;
+    $returnvalue->engineErrorMessage = $validation["message"];
+  }
+  else {
+
+  }
+
+}
+else {
+  $returnvalue = new genericClass();
+  $returnvalue->engineError = 2;
+  $returnvalue->engineErrorMessage = "Management user not found";
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<?php
+
+  require '../../config/connect_2.php';
+  include_once "../../objects/functions.php";
+
+  class genericClass {
+    public $engineMessage = 0;
+    public $engineError = 0;
+    public $engineErrorMessage;
+    public $resultData;
+    public $filteredData;
+  }
+
+  $data = json_decode(file_get_contents("php://input"), true);
+
+  $functions = new Functions();
+
+  if ($connected) {
+
+    try {
+      $conn->beginTransaction();
+
+      $date_added = $functions->today;
+      $active = $functions->active;
+
+      if ($validation["error"] == true) {
+        $returnvalue = new genericClass();
+        $returnvalue->validationError = 1;
+        $returnvalue->validationErrorMessage = $validation["message"];
+      }
+      else {
+
+      }
+
+      $conn->commit();
+    } catch (PDOException $e) {
+      $conn->rollback();
+      throw $e;
+    }
+
+  }
+  else {
+    $returnvalue = new genericClass();
+    $returnvalue->notConnected = 3;
+  }
+
+  echo json_encode($returnvalue);
+
+?>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<?php
+
+  header("Access-Control-Allow-Origin: *");
+  header("Content-Type: application/json; charset=UTF-8");
+  ini_set('display_errors', 1);
+
+  include_once '../server/config/connect.php';
+  include_once "../server/objects/file.php"; // object file
+  include_once "../server/objects/functions.php";
+
+  class genericClass {
+    public $engineMessage = 0;
+    public $engineError = 0;
+    public $engineErrorMessage;
+    public $resultData;
+    public $filteredData;
+  }
+
+  $database = new Database();
+  $db = $database->getConnection();
+  $functions = new Functions();
+  $data = json_decode(file_get_contents("php://input"), true);
+
+  $fileObject = new FileClass($db); // object class initialization
+
+  $result = $fileObject->yourPreferredFunction(); // getting result from any function inside the objectFile using the fileObject class
+
+  if ($functions->isJson($result)) {
+    $returnvalue = new genericClass();
+    $returnvalue->engineMessage = 1;
+    $returnvalue->resultData = $result;
+  }
+  else if (array_key_exists("success",$result)) {
+    if ($result["success"] == true) {
+      $returnvalue = new genericClass();
+      $returnvalue->engineMessage = 1;
+      $returnvalue->resultData = $result["message"];
+    }
+  }
+  else if (array_key_exists("error",$result)) {
+    if ($result["error"] == true) {
+      $returnvalue = new genericClass();
+      $returnvalue->engineError = 2;
+      $returnvalue->engineErrorMessage = $result["message"];
+    }
+    else {
+      $returnvalue = new genericClass();
+      $returnvalue->engineError = 2;
+      $returnvalue->engineErrorMessage = $result["message"];
+    }
+  }
+  else {
+    $returnvalue = new genericClass();
+    $returnvalue->engineMessage = 1;
+    $returnvalue->resultData = $result;
+  }
+
+  echo json_encode($returnvalue);
+
+?>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                    |
+                                                    |
+                                          ~~~ The forgotten ~~~
+                                                    |
+                                                    |
+
+function get_new_arrival_category_short_detail_of_products_for_users($category_unique_id){
+  if (!in_array($category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.category_unique_id=:category_unique_id AND products.status=:status ORDER BY products.added_date DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":category_unique_id", $category_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_featured_category_short_detail_of_products_for_users($category_unique_id){
+  if (!in_array($category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.category_unique_id=:category_unique_id AND products.status=:status ORDER BY products.favorites DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":category_unique_id", $category_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_new_arrival_sub_category_short_detail_of_products_for_users($sub_category_unique_id){
+  if (!in_array($sub_category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.sub_category_unique_id=:sub_category_unique_id AND products.status=:status ORDER BY products.added_date DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":sub_category_unique_id", $sub_category_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_featured_sub_category_short_detail_of_products_for_users($sub_category_unique_id){
+  if (!in_array($sub_category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.sub_category_unique_id=:sub_category_unique_id AND products.status=:status ORDER BY products.favorites DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":sub_category_unique_id", $sub_category_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_new_arrival_mini_category_short_detail_of_products_for_users($mini_category_unique_id){
+  if (!in_array($mini_category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.mini_category_unique_id=:mini_category_unique_id AND products.status=:status ORDER BY products.added_date DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":mini_category_unique_id", $mini_category_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_featured_mini_category_short_detail_of_products_for_users($mini_category_unique_id){
+  if (!in_array($mini_category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.mini_category_unique_id=:mini_category_unique_id AND products.status=:status ORDER BY products.favorites DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":mini_category_unique_id", $mini_category_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_new_arrival_brand_short_detail_of_products_for_users($brand_unique_id){
+  if (!in_array($brand_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.brand_unique_id=:brand_unique_id AND products.status=:status ORDER BY products.added_date DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":brand_unique_id", $brand_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_featured_brand_short_detail_of_products_for_users($brand_unique_id){
+  if (!in_array($brand_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $active = $this->functions->active;
+
+      $product_array = array();
+
+      $sql = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites, brands.name as brand_name, brands.stripped as brand_name_stripped FROM products
+      LEFT JOIN brands ON products.brand_unique_id = brands.unique_id WHERE products.brand_unique_id=:brand_unique_id AND products.status=:status ORDER BY products.favorites DESC";
+      $query = $this->conn->prepare($sql);
+      $query->bindParam(":brand_unique_id", $brand_unique_id);
+      $query->bindParam(":status", $active);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      if ($query->rowCount() > 0) {
+        foreach ($result as $key => $value) {
+
+          $current_product = array();
+          $current_product['unique_id'] = $value['unique_id'];
+          $current_product['name'] = $value['name'];
+          $current_product['stripped'] = $value['stripped'];
+          $current_product['brand_unique_id'] = $value['brand_unique_id'];
+          $current_product['favorites'] = $value['favorites'];
+          $current_product['brand_name'] = $value['brand_name'];
+          $current_product['brand_name_stripped'] = $value['brand_name_stripped'];
+
+          $product_id = $value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_product_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_product_images[] = $image_value['image'];
+            }
+
+            $current_product['product_images'] = $current_product_images;
+          }
+          else{
+            $current_product['product_images'] = null;
+          }
+
+          $product_array[] = $current_product;
+        }
+        return $product_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_user_category_search_short_detail_of_products_for_users($search_word, $category_unique_id){
+  if (!in_array($search_word,$this->not_allowed_values) && !in_array($category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $search_history_array = array();
+
+      $keyword = "%".$search_word."%";
+
+      $sql3 = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites,
+      brands.name as brand_name, brands.stripped as brand_name_stripped FROM products LEFT JOIN brands ON products.brand_unique_id = brands.unique_id LEFT JOIN categories ON products.category_unique_id = categories.unique_id LEFT JOIN sub_category ON products.sub_category_unique_id = sub_category.unique_id
+      LEFT JOIN mini_category ON products.mini_category_unique_id = mini_category.unique_id WHERE (products.name LIKE :search_word OR sub_products.name LIKE :search_word OR sub_products.size LIKE :search_word OR mini_category.name LIKE :search_word
+      OR sub_category.name LIKE :search_word OR categories.name LIKE :search_word OR brands.name LIKE :search_word) AND products.category_unique_id=:category_unique_id ORDER BY products.added_date ASC, products.favorites DESC";
+      $query3 = $this->conn->prepare($sql3);
+      $query3->bindParam(":search_word", $keyword);
+      $query3->bindParam(":category_unique_id", $category_unique_id);
+      $query3->execute();
+
+      $product_result = $query3->fetchAll();
+
+      if ($query3->rowCount() > 0) {
+        foreach ($product_result as $key => $product_value) {
+
+          $current_search_history = array();
+          $current_search_history['unique_id'] = $product_value['unique_id'];
+          $current_search_history['name'] = $product_value['name'];
+          $current_search_history['stripped'] = $product_value['stripped'];
+          $current_search_history['brand_unique_id'] = $product_value['brand_unique_id'];
+          $current_search_history['favorites'] = $product_value['favorites'];
+          $current_search_history['brand_name'] = $product_value['brand_name'];
+          $current_search_history['brand_name_stripped'] = $product_value['brand_name_stripped'];
+
+          $product_id = $product_value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_search_history_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_search_history_images[] = $image_value['image'];
+            }
+
+            $current_search_history['product_images'] = $current_search_history_images;
+          }
+          else{
+            $current_search_history['product_images'] = null;
+          }
+
+          $search_history_array[] = $current_search_history;
+        }
+        return $search_history_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_user_sub_category_search_short_detail_of_products_for_users($search_word, $sub_category_unique_id){
+  if (!in_array($search_word,$this->not_allowed_values) && !in_array($sub_category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $search_history_array = array();
+
+      $keyword = "%".$search_word."%";
+
+      $sql3 = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites,
+      brands.name as brand_name, brands.stripped as brand_name_stripped FROM products LEFT JOIN brands ON products.brand_unique_id = brands.unique_id LEFT JOIN categories ON products.category_unique_id = categories.unique_id LEFT JOIN sub_category ON products.sub_category_unique_id = sub_category.unique_id
+      LEFT JOIN mini_category ON products.mini_category_unique_id = mini_category.unique_id WHERE (products.name LIKE :search_word OR sub_products.name LIKE :search_word OR sub_products.size LIKE :search_word OR mini_category.name LIKE :search_word
+      OR sub_category.name LIKE :search_word OR categories.name LIKE :search_word OR brands.name LIKE :search_word) AND products.sub_category_unique_id=:sub_category_unique_id ORDER BY products.added_date ASC, products.favorites DESC";
+      $query3 = $this->conn->prepare($sql3);
+      $query3->bindParam(":search_word", $keyword);
+      $query3->bindParam(":sub_category_unique_id", $sub_category_unique_id);
+      $query3->execute();
+
+      $product_result = $query3->fetchAll();
+
+      if ($query3->rowCount() > 0) {
+        foreach ($product_result as $key => $product_value) {
+
+          $current_search_history = array();
+          $current_search_history['unique_id'] = $product_value['unique_id'];
+          $current_search_history['name'] = $product_value['name'];
+          $current_search_history['stripped'] = $product_value['stripped'];
+          $current_search_history['brand_unique_id'] = $product_value['brand_unique_id'];
+          $current_search_history['favorites'] = $product_value['favorites'];
+          $current_search_history['brand_name'] = $product_value['brand_name'];
+          $current_search_history['brand_name_stripped'] = $product_value['brand_name_stripped'];
+
+          $product_id = $product_value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_search_history_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_search_history_images[] = $image_value['image'];
+            }
+
+            $current_search_history['product_images'] = $current_search_history_images;
+          }
+          else{
+            $current_search_history['product_images'] = null;
+          }
+
+          $search_history_array[] = $current_search_history;
+        }
+        return $search_history_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+function get_user_mini_category_search_short_detail_of_products_for_users($search_word, $mini_category_unique_id){
+  if (!in_array($search_word,$this->not_allowed_values) && !in_array($mini_category_unique_id,$this->not_allowed_values)) {
+    try {
+      $this->conn->beginTransaction();
+
+      $search_history_array = array();
+
+      $keyword = "%".$search_word."%";
+
+      $sql3 = "SELECT products.unique_id, products.name, products.stripped, products.brand_unique_id, products.favorites,
+      brands.name as brand_name, brands.stripped as brand_name_stripped FROM products LEFT JOIN brands ON products.brand_unique_id = brands.unique_id LEFT JOIN categories ON products.category_unique_id = categories.unique_id LEFT JOIN sub_category ON products.sub_category_unique_id = sub_category.unique_id
+      LEFT JOIN mini_category ON products.mini_category_unique_id = mini_category.unique_id WHERE (products.name LIKE :search_word OR sub_products.name LIKE :search_word OR sub_products.size LIKE :search_word OR mini_category.name LIKE :search_word
+      OR sub_category.name LIKE :search_word OR categories.name LIKE :search_word OR brands.name LIKE :search_word) AND products.mini_category_unique_id=:mini_category_unique_id ORDER BY products.added_date ASC, products.favorites DESC";
+      $query3 = $this->conn->prepare($sql3);
+      $query3->bindParam(":search_word", $keyword);
+      $query3->bindParam(":mini_category_unique_id", $mini_category_unique_id);
+      $query3->execute();
+
+      $product_result = $query3->fetchAll();
+
+      if ($query3->rowCount() > 0) {
+        foreach ($product_result as $key => $product_value) {
+
+          $current_search_history = array();
+          $current_search_history['unique_id'] = $product_value['unique_id'];
+          $current_search_history['name'] = $product_value['name'];
+          $current_search_history['stripped'] = $product_value['stripped'];
+          $current_search_history['brand_unique_id'] = $product_value['brand_unique_id'];
+          $current_search_history['favorites'] = $product_value['favorites'];
+          $current_search_history['brand_name'] = $product_value['brand_name'];
+          $current_search_history['brand_name_stripped'] = $product_value['brand_name_stripped'];
+
+          $product_id = $product_value['unique_id'];
+
+          $sql2 = "SELECT image FROM product_images WHERE product_unique_id=:product_unique_id LIMIT 1";
+          $query2 = $this->conn->prepare($sql2);
+          $query2->bindParam(":product_unique_id", $product_id);
+          $query2->execute();
+
+          $images_result = $query2->fetchAll();
+
+          if ($query2->rowCount() > 0) {
+            $current_search_history_images = array();
+
+            foreach ($images_result as $key => $image_value) {
+              $current_search_history_images[] = $image_value['image'];
+            }
+
+            $current_search_history['product_images'] = $current_search_history_images;
+          }
+          else{
+            $current_search_history['product_images'] = null;
+          }
+
+          $search_history_array[] = $current_search_history;
+        }
+        return $search_history_array;
+      }
+      else {
+        $output['error'] = true;
+        $output['message'] = "Empty";
+        return $output;
+      }
+
+      $this->conn->commit();
+    } catch (PDOException $e) {
+      $this->conn->rollback();
+      throw $e;
+    }
+  }
+  else {
+    $output['error'] = true;
+    $output['message'] = "All fields are required";
+    return $output;
+  }
+
+}
+
+
+
+                                                    |
+                                                    |
+                                                 The End
+                                                    |
+                                                    |
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+________________________________Things to remember___-____Notes__________________________________________________________________________________________________________________
+
+* Later I can add the following for the stores
+    * get_brand_short_detail_of_products_for_users($store_unique_id) in products_obj.php
+    * get_new_arrival_brand_short_detail_of_products_for_users($store_unique_id) in products_obj.php
+    * get_featured_brand_short_detail_of_products_for_users($store_unique_id) in products_obj.php
+
+    And then the following in the get folder
+    * store-get_store_products_short.php
+    * store-get_store_new_arrivals.php
+    * store-get_store_featured_products.php
+
+* Later I can duplicate the following tables for stores.reestoc.com
+  - products as store_products
+  - product_images as store_product_images
+  - sub_products as store_sub_products
+  - sub_product_images as store_sub_product_images
+
+* Note : All (_alt.php) in the (data/orders/ & data/coupons) folder are old codes, they are deprecated
+* Note : All (_alte.php) in the (data/orders/ & data/coupons) folder are second hand old codes, they are deprecated
+
+* Create a route for all completed Orders and show all their details
+
+* Complete the add_coupon_voucher_and_checkout_order.php script for the use of one function
+  for checking out [NO NEED AGAIN]
+
+* Check all things (js, php and html) in association with shipping fees whether
+  regular sub products shipping fees or sharing shipping fees and do a makeover
+  for pickup locations
+
+* Create pickup_locations_obj.php by duplicating shipping_fees_obj.php then do
+  the necessary changes to add the pickup location instances
+
+* Create a nav link, page and js for the default pickup locations with name "Pickup Locations"
+  link will be "pickup-locations", access to 1, 2 and 3 user roles
+
+* Create a folder in the data directory for default_pickup_locations with the following phps
+  *^ Inputs will be handled singularly for adding and editing
+  - add_new_default_pickup_location.php
+  - edit_default_pickup_location.php (Edit the address and additional information only)
+  - remove_default_pickup_location.php
+  - restore_default_pickup_location.php
+
+* When adding a sub product pickup location we'll do the following
+  - First get all the default pickup locations (you'll have to get it from the
+  already created pickup_locations_obj.php file) using the get_default_pickup_locations()
+  in the pickup_locations_obj.php file. Put these in an array of checkboxes for
+  multi select just like the sub products are
+  - Get the price for this input
+  - Get all the sub products that'll be shipped to this certain locations that are selected
+  -* Create a add_new_selected_pickup_location_shipping_fee.php file in the
+     data/shipping_fees folder, collect the following details
+    ^ default_pickup_location_unique_ids (the array up there)
+      -*^ We'll use this to get the city, state and country of each of the location
+    ^ price (from the above input)
+    ^ sub_product_unique_ids
+  -~ Use the shipping_fees\add_new_selected_shipping_fee.php for reference
+  -~ The process go thus  :
+     for each (default_pickup_location_unique_ids){
+      get the default_pickup_location_unique_id
+
+      for each (sub_product_unique_ids){
+        check if exists already in the pickup_locations table
+        else {
+          insert into pickup_locations the following values
+          - sub_product_unique_id = the sub_product_unique_id
+          - sharing_unique_id = null
+          - savings_unique_id = null
+          - default_pickup_location_unique_id = the pickup_location_unique_id
+          - price = the price
+        }
+      }
+     }
+  -* Create the following phps :
+    - update_pickup_location_shipping_fee.php
+    - remove_pickup_location_shipping_fee.php
+    - restore_pickup_location_shipping_fee.php
+    file in the data/shipping_fees folder
+
+* When adding a sharing item pickup location we'll do the following
+  - First get all the default pickup locations (you'll have to get it from the
+  already created pickup_locations_obj.php file) using the get_default_pickup_locations()
+  in the pickup_locations_obj.php file. Put these in an array of checkboxes for
+  multi select just like the sharing items will be
+  - Get the price for this input
+  - Get all the sharing items that'll be shipped to this certain locations that are selected
+  -* Create a add_new_selected_pickup_location_sharing_shipping_fee.php file in the
+    data/sharing_shipping_fees folder, collect the following details
+   ^ pickup_location_unique_ids (the array up there)
+     -*^ We'll use this to get the city, state and country of each of the location
+   ^ price (from the above input)
+   ^ sub_product_unique_ids
+  -~ Use the shipping_fees/add_new_selected_shipping_fee.php for reference
+  -~ The process go thus  :
+    for each (pickup_location_unique_ids){
+     get the default_pickup_location_unique_id
+
+     for each (sharing_unique_ids){
+       check if exists already in the pickup_locations table
+       else {
+         insert into pickup_locations the following values
+         - sub_product_unique_id = null
+         - sharing_unique_id = the sharing_unique_id
+         - savings_unique_id = null
+         - default_pickup_location_unique_id = the pickup_location_unique_id
+         - price = the price
+       }
+     }
+    }
+  -* Create the following phps :
+     - update_pickup_location_sharing_shipping_fee.php
+     - remove_pickup_location_sharing_shipping_fee.php
+     - restore_pickup_location_sharing_shipping_fee.php
+     file in the data/sharing_shipping_fees folder
+
+----------------------- Add this for pickup locations for orders ----------------------------------------------------------------------------------------------------------------
+
+orders.pickup_location,
+$current_order['pickup_location'] = $value['pickup_location'];
+$pickup_location = (int)$value['pickup_location'];
+
+, default_pickup_locations.firstname, default_pickup_locations.lastname, default_pickup_locations.address, default_pickup_locations.additional_information
+
+$the_shipping_fee_firstname = $the_shipping_fee_price_details[4];
+$the_shipping_fee_lastname = $the_shipping_fee_price_details[5];
+$the_shipping_fee_address = $the_shipping_fee_price_details[6];
+$the_shipping_fee_additional_information = $the_shipping_fee_price_details[7];
+
+$current_order['shipping_to_firstname'] = $the_shipping_fee_firstname;
+$current_order['shipping_to_lastname'] = $the_shipping_fee_lastname;
+$current_order['shipping_to_address'] = $the_shipping_fee_address;
+$current_order['shipping_to_additional_information'] = $the_shipping_fee_additional_information;
+
+$current_order['shipping_to_firstname'] = null;
+$current_order['shipping_to_lastname'] = null;
+$current_order['shipping_to_address'] = null;
+$current_order['shipping_to_additional_information'] = null;
+
+if ($pickup_location == 1) {
+  $sql4 = "SELECT pickup_locations.price, default_pickup_locations.city, default_pickup_locations.state, default_pickup_locations.country FROM pickup_locations
+  LEFT JOIN default_pickup_locations ON pickup_locations.default_pickup_location_unique_id = default_pickup_locations.unique_id WHERE pickup_locations.unique_id=:unique_id AND pickup_locations.sub_product_unique_id=:sub_product_unique_id";
+  $query4 = $this->conn->prepare($sql4);
+  $query4->bindParam(":unique_id", $shipping_fee_unique_id);
+  $query4->bindParam(":sub_product_unique_id", $sub_product_id);
+  $query4->execute();
+
+  if ($query4->rowCount() > 0) {
+    $the_shipping_fee_price_details = $query4->fetch();
+    $the_shipping_fee_price = (int)$the_shipping_fee_price_details[0];
+    $the_shipping_fee_city = $the_shipping_fee_price_details[1];
+    $the_shipping_fee_state = $the_shipping_fee_price_details[2];
+    $the_shipping_fee_country = $the_shipping_fee_price_details[3];
+
+    $current_order['total_order_amount'] = $the_total_order_amount_with_coupon + ($the_shipping_fee_price * $current_order_quantity);
+    $current_order['shipping_to_city'] = $the_shipping_fee_city;
+    $current_order['shipping_to_state'] = $the_shipping_fee_state;
+    $current_order['shipping_to_country'] = $the_shipping_fee_country;
+    $current_order['shipping_fee_price'] = $the_shipping_fee_price != 0 ? ($the_shipping_fee_price * $current_order_quantity) : 0;
+
+  }
+  else {
+    $current_order['total_order_amount'] = $the_total_order_amount_with_coupon;
+    $current_order['shipping_to_city'] = null;
+    $current_order['shipping_to_state'] = null;
+    $current_order['shipping_to_country'] = null;
+    $current_order['shipping_fee_price'] = null;
+  }
+
+}
+else {
+
+  $sql4 = "SELECT price, city, state, country FROM shipping_fees WHERE unique_id=:unique_id AND sub_product_unique_id=:sub_product_unique_id";
+  $query4 = $this->conn->prepare($sql4);
+  $query4->bindParam(":unique_id", $shipping_fee_unique_id);
+  $query4->bindParam(":sub_product_unique_id", $sub_product_id);
+  $query4->execute();
+
+  if ($query4->rowCount() > 0) {
+    $the_shipping_fee_price_details = $query4->fetch();
+    $the_shipping_fee_price = (int)$the_shipping_fee_price_details[0];
+    $the_shipping_fee_city = $the_shipping_fee_price_details[1];
+    $the_shipping_fee_state = $the_shipping_fee_price_details[2];
+    $the_shipping_fee_country = $the_shipping_fee_price_details[3];
+
+    $current_order['total_order_amount'] = $the_total_order_amount_with_coupon + ($the_shipping_fee_price * $current_order_quantity);
+    $current_order['shipping_to_city'] = $the_shipping_fee_city;
+    $current_order['shipping_to_state'] = $the_shipping_fee_state;
+    $current_order['shipping_to_country'] = $the_shipping_fee_country;
+    $current_order['shipping_fee_price'] = $the_shipping_fee_price != 0 ? ($the_shipping_fee_price * $current_order_quantity) : 0;
+
+  }
+  else {
+    $current_order['total_order_amount'] = $the_total_order_amount_with_coupon;
+    $current_order['shipping_to_city'] = null;
+    $current_order['shipping_to_state'] = null;
+    $current_order['shipping_to_country'] = null;
+    $current_order['shipping_fee_price'] = null;
+  }
+
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------- User Roles -------------------------------------------------------------------------------------------------------------------------
+
+1 - Super Administrator
+2 - Administrator
+3 - Sub Administrator
+4 - User (access to 5, 7, 8)
+5 - Brands, Products, Sub Products & Sharing User
+6 - Carts, Orders & Shipments User
+7 - Offered Services & Categories User
+8 - Product Categories, Sub Categories & Mini Categories User
+9 - Coupons, Flash Deals & Pop Up Deals User
+10 - Reviews, Favorites, Disputes, Search History & View History User
+11 - Stores User
+12 - Main Rider
+13 - Sub Rider
+14 - Main Agent
+15 - Sub Agent
+16 - Blogger
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+$http_origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : null;
+  $allowed_domains = array("https://auth.reestoc.com", "https://dashboard.reestoc.com");
+  foreach ($allowed_domains as $value) {if ($http_origin === $value) {header('Access-Control-Allow-Origin: ' . $http_origin);}}
+  header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+  header("Access-Control-Allow-Headers: Content-Type, Authorization, origin, Accept-Language, Range, X-Requested-With");
+  header("Access-Control-Allow-Credentials: true");
+
+  $servername = "localhost";
+    $username = "reesdmau_users";
+    $password = "Rure1821185/";
+    $dbname = "reesdmau_reestoc.com";
